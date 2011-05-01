@@ -33,11 +33,11 @@ Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-
 
 Example module returning number of total users for your site:
 		
-		```python
-		from django.contrib.auth.models import User
-		def user_count():
-		    users = User.objects.all()
-		    return 'Total Users', users.count()
-		```
+```python
+from django.contrib.auth.models import User
+def user_count():
+    users = User.objects.all()
+    return 'Total Users', users.count()
+```
 		
 More examples can be found in [core.py](https://github.com/anderspetersson/django-bigbrother/blob/master/bigbrother/core.py)
