@@ -23,7 +23,7 @@ METADATA = dict(
     ],
     zip_safe = False,
     packages=find_packages(),
-    package_data={'bigbrother': ['templates/bigbrother/*.html', 'static/bigbrother/*.css'], }
+    package_data={'bigbrother': ['templates/bigbrother/*.html', 'static/*'], }
 )
 
 if __name__ == '__main__':
