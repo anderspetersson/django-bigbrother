@@ -43,3 +43,9 @@ def user_count():
 ```
 		
 More examples can be found in [core.py](https://github.com/anderspetersson/django-bigbrother/blob/master/bigbrother/core.py)
+
+## Screenshot
+
+This is how it looks. (With 2 custom modules).
+
+![Screenshot](http://c544632.r32.cf2.rackcdn.com/bigbrother.png)
