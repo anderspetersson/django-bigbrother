@@ -1,3 +1,4 @@
 *.pyc
-dist/*
+dist/
+django_bigbrother.egg-info/*
 django-bigrother.egg-info/*

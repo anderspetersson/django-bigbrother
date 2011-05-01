@@ -3,27 +3,30 @@ from setuptools import setup,find_packages
 
 METADATA = dict(
     name='django-bigbrother',
-    version='0.1.0',
+    version='0.1.1',
     author='Anders Petersson',
     author_email='me@anderspetersson.se',
     description='Modular Dashboard for Django Projects',
     long_description=open('README.md').read(),
     url='http://github.com/anderspetersson/django-bigbrother',
     keywords='django dashboard bigbrother monitoring',
+    install_requires=['psutil'],
     include_package_data=True,
     classifiers=[
         'Development Status :: 1 - Beta',
-        'Intended Audience :: Developers, Sysadmins',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Sysadmins',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'Environment :: Web Environment',
         'Topic :: Internet',
+        'Topic :: Monitoring',
+        'Environment :: Web Environment',
         'Operating System :: Linux',
         'Programming Language :: Python',
         'Framework :: Django',
     ],
     zip_safe = False,
     packages=find_packages(),
-    package_data={'bigbrother': ['templates/bigbrother/*.html', 'static/*'], }
+    package_data={'bigbrother': ['templates/bigbrother/*.html', 'static/css/*', 'static/img/*'], }
 )
 
 if __name__ == '__main__':
