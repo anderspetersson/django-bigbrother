@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard.css">
+</head>
+
+<body>
+	<div id="container">
+		<div id="dashboard" class="clearfix">
+			<ul>
+				{% for m in bb %}
+				<li>
+					<div class="head">
+						<h2>{{ m.name }}</h2>
+					</div>
+					<div class="num">
+						<h1>{{ m.value }}</h1>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
