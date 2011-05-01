@@ -26,3 +26,18 @@ Django Bigbrother is a modular dashboard app for Django projects.
 		urlpatterns = patterns('', 
 			# ...
 			url(r'^bigbrother/', include('bigbrother.urls')))
+			
+## Extending Bigbrother
+
+Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-module is simply a function returning the name of the stat you are monitoring, and the value of it. Custom modules can live anywhere in your app, just put the full path to it in BIGBROTHER_MODULES. 
+
+Example module returning number of total users for your site:
+		
+		```python
+		from django.contrib.auth.models import User
+		def user_count():
+		    users = User.objects.all()
+		    return 'Total Users', users.count()
+		```
+		
+More examples can be found in [core.py](https://github.com/anderspetersson/django-bigbrother/blob/master/bigbrother/core.py)
