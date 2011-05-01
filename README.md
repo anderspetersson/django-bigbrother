@@ -9,7 +9,7 @@ Django Bigbrother is a modular dashboard app for Django projects.
 
 ## Installation
 
-		pip install -e git://github.com/anderspetersson/django-bigbrother.git#egg=django-bigbrother
+		pip install django-bigbrother
 	
 ## Configuration
 
