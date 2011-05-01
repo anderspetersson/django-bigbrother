@@ -4,7 +4,8 @@ Django Bigbrother is a modular dashboard app for Django projects.
 
 ## Requirements
 
-* Django >= 1.3 (http://pypi.python.org/pypi/django/)
+* django >= 1.3 (http://pypi.python.org/pypi/django/)
+* psutil >= 2.1 (http://code.google.com/p/psutil/)
 
 ## Installation
 
@@ -18,6 +19,7 @@ Django Bigbrother is a modular dashboard app for Django projects.
 		BIGBROTHER_MODULES = (
 		    'bigbrother.core.user_count',
 		    'bigbrother.core.new_users_today_count',
+			'bigbrother.core.free_ram_count',
 		    'bigbrother.core.free_disk_space_count',
 		)
 
