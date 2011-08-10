@@ -1,22 +1,54 @@
-from django.contrib.auth.models import User
 import datetime
 import os
 import psutil
+from django.template.defaultfilters import slugify
 
-def user_count():
-    users = User.objects.all()
-    return 'Total Users', users.count()
+class BigBrotherModule():
+    name = 'Unamed'
+    write_to_db = True
+    prepend_text = ''
+    add_text = ''
     
-def new_users_today_count():
-    curday = datetime.datetime.today()
-    users = User.objects.filter(date_joined__year=curday.year, date_joined__month=curday.month, date_joined__day=curday.day)
-    return 'New Users Today', users.count()
+    def get_val(self):
+        return None
+        
+    def get_text(self):
+        return '%s%s%s' % (self.prepend_text, self.get_val(), self.add_text)
+        
+    def get_slug(self):
+        return slugify(self.name)
 
-def free_ram_count():
-    return 'Free RAM', str(psutil.avail_phymem() / (1024 * 1024))+' MB'
+class UserCount(BigBrotherModule):
+    name = 'Total Users'
+    
+    def get_val(self):
+        from django.contrib.auth.models import User
+        users = User.objects.all()
+        return users.count()
 
-def free_disk_space_count():
-    s = os.statvfs('/')
-    return 'Free Disk Space', str(round((s.f_bavail * s.f_frsize) / ( 1024 * 1024 * 1024.0 ), 1))+' GB'
+        
+class NewUsersTodayCount(BigBrotherModule):
+    name = 'New Users Today'
     
+    def get_val(self):
+        from django.contrib.auth.models import User
+        curday = datetime.datetime.today()
+        users = User.objects.filter(date_joined__year=curday.year, date_joined__month=curday.month, date_joined__day=curday.day)
+        return users.count()
+
+
+class FreeRamCount(BigBrotherModule):
+    name = 'Free RAM'
+    add_text = ' MB'
     
+    def get_val(self):
+        return str(psutil.avail_phymem() / (1024 * 1024))
+
+
+class FreeDiskCount(BigBrotherModule):
+    name = 'Free Disk Space'
+    add_text = ' GB'
+    
+    def get_val(self):
+        s = os.statvfs('/')
+        return str(round((s.f_bavail * s.f_frsize) / ( 1024 * 1024 * 1024.0 ), 1))

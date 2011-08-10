@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.utils.importlib import import_module
-
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+
+from bigbrother.models import ModuleStat
 
 
 def index(request):
@@ -12,9 +14,29 @@ def index(request):
     for m in settings.BIGBROTHER_MODULES:
         modulename, attr = m.rsplit('.', 1)
         module = import_module(modulename)
-        name, value = getattr(module,attr)()
-        bb.append({'name':name, 'value':value})   
+        name = getattr(module,attr)().name
+        value = getattr(module,attr)().get_text()
+        bb.append({'name':name, 'value':value})
     
-    return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request))
+    return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
+
+def update(request):
+    
+    bb = []
+    
+    for m in settings.BIGBROTHER_MODULES:
+        modulename, attr = m.rsplit('.', 1)
+        module = import_module(modulename)
+        
+        if getattr(module,attr)().write_to_db:
+            name = getattr(module,attr)().get_slug()
+            value = getattr(module,attr)().get_val()
+            bb.append({'name':name, 'value':value})
+            
+    for mo in bb:
+        ModuleStat(modulename=mo['name'], value=mo['value']).save()
+    
+    return HttpResponse(bb)
+            
 
     
