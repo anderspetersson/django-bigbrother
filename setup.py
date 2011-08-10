@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 
 METADATA = dict(
     name='django-bigbrother',
-    version='0.2.0',
+    version='0.2.1',
     author='Anders Petersson',
     author_email='me@anderspetersson.se',
     description='Modular Dashboard for Django Projects',
@@ -25,7 +25,7 @@ METADATA = dict(
     ],
     zip_safe = False,
     packages=find_packages(),
-    package_data={'bigbrother': ['templates/bigbrother/*.html', 'static/css/*', 'static/img/*'], }
+    package_data={'bigbrother': ['templates/bigbrother/*.html', 'static/css/*', 'static/img/*', 'static/js/*'], }
 )
 
 if __name__ == '__main__':
