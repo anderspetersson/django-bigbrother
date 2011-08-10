@@ -1,0 +1,24 @@
+{% extends "bigbrother/index.html" %}
+
+{% block extrajs %}
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
+	<script type="text/javascript"> 
+	$(function () {
+		var d1 = [{% for s in stats %}[{{ s.added|date:"j" }}, {{ s.value }}]{% endfor %}]
+	    $.plot($("#graph"), [
+			{
+            	data: d1,
+				points: {show:true},
+				lines: {show:true},
+        	}
+		]);
+	});
+	</script>
+{% endblock %}
+{% block content %}
+<div id="graphcontainer">
+	<h1>{{ stats.0.modulename }}</h1>
+	<div id="graph"></div>
+</div>
+{% endblock %}

@@ -85,6 +85,15 @@ body{
     text-shadow:1px 0 1px #fff;
 }
 
+a, a:visited, a:hover, a:focus{
+    color:#0c0c0c;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;;
+}
+
 h1{
     font-family: 'PT Serif', arial, serif;
     font-weight:bold;
@@ -123,5 +132,17 @@ h2{
 
 #dashboard ul li h1{
     margin-bottom:0;
+}
+
+#graphcontainer{
+    margin:0 auto;
+    width:600px;
+    text-align:center;
+}
+
+#graph{
+    margin:0 auto;
+    width:600px;
+    height:300px;
 }
 

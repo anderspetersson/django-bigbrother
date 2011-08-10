@@ -6,11 +6,14 @@
 
 	<title>Dashboard</title>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard.css">
+	{% block extrajs %}{% endblock %}
 </head>
 
 <body>
 	<div id="container">
+		
 		<div id="dashboard" class="clearfix">
+		{% block content %}
 			<ul>
 				{% for m in bb %}
 				<li>
@@ -18,12 +21,14 @@
 						<h2>{{ m.name }}</h2>
 					</div>
 					<div class="num">
-						<h1>{{ m.value }}</h1>
+						<h1><a href="{% url bigbrother.views.graph slug=m.name|slugify %}">{{ m.value }}</a></h1>
 					</div>
 				</li>
 				{% endfor %}
 			</ul>
+		{% endblock %}
 		</div>
+		
 	</div>
 </body>
 </html>

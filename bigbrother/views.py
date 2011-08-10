@@ -20,6 +20,10 @@ def index(request):
     
     return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
 
+def graph(request, slug):
+    stats = ModuleStat.objects.filter(modulename=slug)[0:30]    
+    return render_to_response('bigbrother/graph.html', {'stats': stats}, context_instance=RequestContext(request))
+
 def update(request):
     
     bb = []
