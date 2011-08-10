@@ -1,3 +1,7 @@
+0.2.3
+- Added shell script to add a cronjob for polling the update view.
+- Fixed an error preventing graph from showing.
+
 0.2.2
 - Templates and static files where not beeing included into package.
 

@@ -10,6 +10,10 @@ Django Bigbrother is a modular dashboard app for Django projects.
 ## Installation
 
 		pip install django-bigbrother
+		
+Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ship with a shellscript to make this easy:
+		
+		$ bigbrother_install.sh
 	
 ## Configuration
 

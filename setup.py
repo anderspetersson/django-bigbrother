@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 
 METADATA = dict(
     name='django-bigbrother',
-    version='0.2.2',
+    version='0.2.3',
     author='Anders Petersson',
     author_email='me@anderspetersson.se',
     description='Modular Dashboard for Django Projects',
@@ -12,6 +12,7 @@ METADATA = dict(
     keywords='django dashboard bigbrother monitoring',
     install_requires=['psutil'],
     include_package_data=True,
+    scripts = ['bigbrother/bin/bigbrother_install.sh'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
