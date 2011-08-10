@@ -5,7 +5,7 @@
   	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
 	<script type="text/javascript"> 
 	$(function () {
-		var d1 = [{% for s in stats %}[{{ s.added|date:"j" }}, {{ s.value }}]{% endfor %}]
+		var d1 = [{% for s in stats %}[{{ s.added|date:"j" }}, {{ s.value }}],{% endfor %}]
 	    $.plot($("#graph"), [
 			{
             	data: d1,
