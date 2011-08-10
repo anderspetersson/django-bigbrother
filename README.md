@@ -17,10 +17,10 @@ Django Bigbrother is a modular dashboard app for Django projects.
 2. Add modules to `BIGBROTHER_MODULES` in settings.py
 
 		BIGBROTHER_MODULES = (
-		    'bigbrother.core.user_count',
-		    'bigbrother.core.new_users_today_count',
-			'bigbrother.core.free_ram_count',
-		    'bigbrother.core.free_disk_space_count',
+	    	'bigbrother.core.UserCount',
+	    	'bigbrother.core.NewUsersTodayCount',
+	    	'bigbrother.core.FreeRamCount',
+	    	'bigbrother.core.FreeDiskCount',
 		)
 
 3. Include `bigbrother.urls` in your top level urls:
@@ -31,18 +31,26 @@ Django Bigbrother is a modular dashboard app for Django projects.
 			
 ## Extending Bigbrother
 
-Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-module is simply a function returning the name of the stat you are monitoring, and the value of it. Custom modules can live anywhere in your app, just put the full path to it in BIGBROTHER_MODULES. 
+Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-module is subclass of bigbrother.core.BigBrotherModule, with a "get_val"-method returning the stat you are monitoring, and the value of it. Custom modules can live anywhere in your app, just put the full path to it in BIGBROTHER_MODULES. 
 
 Example module returning number of total users for your site:
 		
 ```python
-from django.contrib.auth.models import User
-def user_count():
-    users = User.objects.all()
-    return 'Total Users', users.count()
+from bigbrother.core import BigBrotherModule
+class UserCount(BigBrotherModule):
+    name = 'Total Users'
+    
+    def get_val(self):
+        from django.contrib.auth.models import User
+        users = User.objects.all()
+        return users.count()
 ```
 		
 More examples can be found in [core.py](https://github.com/anderspetersson/django-bigbrother/blob/master/bigbrother/core.py)
+
+## Tracking data for graphs
+
+New in Bigbrother 0.2.0 is the ability to save data and show graphs. This is still in a very early stage. To save data to the database, goto yoururl.com/bigbrother/update/. Setting up a cronjob to do this at midnight every day is recommended. The graphs does currently only support one data entry per day.
 
 ## Screenshot
 

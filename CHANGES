@@ -1,0 +1,4 @@
+0.2.0
+- [Backwards Incompatible] Modules are now class-based.
+- Modules can now save data in DB.
+- Basic implementation of a graph for the stored data.
