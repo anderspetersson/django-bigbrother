@@ -1,3 +1,9 @@
+0.2.2
+- Templates and static files where not beeing included into package.
+
+0.2.1
+- Fixed a problem related to static files not beeing included into package.
+
 0.2.0
 - [Backwards Incompatible] Modules are now class-based.
 - Modules can now save data in DB.
