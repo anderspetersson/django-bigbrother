@@ -3,16 +3,20 @@
 {% block extrajs %}
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
   	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
-	<script type="text/javascript"> 
+	<script type="text/javascript">
 	$(function () {
-		var d1 = [{% for s in stats %}[{{ s.added|date:"j" }}, {{ s.value }}],{% endfor %}]
-	    $.plot($("#graph"), [
-			{
-            	data: d1,
+		var d1 = [{% for s in stats %}[(new Date({{ s.added|date:"Y" }},{{ s.added|date:"n" }}, {{ s.added|date:"j" }})).getTime(), {{ s.value }}],{% endfor %}]
+	    $.plot($("#graph"), [d1], {
 				points: {show:true},
 				lines: {show:true},
-        	}
-		]);
+				xaxis: {	mode: "time",
+							minTickSize: [1, "day"],
+							timeformat: "%y/%m/%d",
+							min: (new Date({{ first|date:"Y" }}, {{ first|date:"n" }}, {{ first|date:"j" }})).getTime(),
+							max: (new Date({{ last|date:"Y" }}, {{ last|date:"n" }}, {{ last|date:"j" }})).getTime()
+						},
+				barWidth: 1000000
+        	});
 	});
 	</script>
 {% endblock %}
