@@ -13,7 +13,7 @@ class BigBrotherModule():
         return None
         
     def get_text(self):
-        return '%s%s%s' % (self.prepend_text, self.get_val(), self.add_text)
+        return '%s%g%s' % (self.prepend_text, self.get_val(), self.add_text)
         
     def get_slug(self):
         return slugify(self.name)
@@ -42,8 +42,7 @@ class FreeRamCount(BigBrotherModule):
     add_text = ' MB'
     
     def get_val(self):
-        return str(psutil.avail_phymem() / (1024 * 1024))
-
+        return psutil.avail_phymem() / (1024 * 1024)
 
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'
@@ -51,4 +50,4 @@ class FreeDiskCount(BigBrotherModule):
     
     def get_val(self):
         s = os.statvfs('/')
-        return str(round((s.f_bavail * s.f_frsize) / ( 1024 * 1024 * 1024.0 ), 1))
+        return round((s.f_bavail * s.f_frsize) / ( 1024 * 1024 * 1024.0 ), 1)

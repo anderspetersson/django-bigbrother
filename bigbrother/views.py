@@ -21,10 +21,13 @@ def index(request):
     return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
 
 def graph(request, slug):
-    stats = ModuleStat.objects.filter(modulename=slug)[0:30]
-    first = stats[0].added
-    last = stats[::-1][0].added
-    return render_to_response('bigbrother/graph.html', {'stats': stats, 'first':first, 'last': last}, context_instance=RequestContext(request))
+    week = ModuleStat.objects.filter(modulename=slug)[0:7]
+    month = ModuleStat.objects.filter(modulename=slug)[0:31]
+    year = ModuleStat.objects.filter(modulename=slug)[0:365]
+    lastdow = week[week.count()-1].added
+    lastdom = month[month.count()-1].added
+    lastdoy = year[year.count()-1].added
+    return render_to_response('bigbrother/graph.html', locals(), context_instance=RequestContext(request))
 
 def update(request):
     

@@ -136,13 +136,14 @@ h2{
 
 #graphcontainer{
     margin:0 auto;
-    width:600px;
+    width:700px;
     text-align:center;
 }
 
-#graph{
+.graph{
     margin:0 auto;
-    width:600px;
+    width:700px;
     height:300px;
+    margin-bottom:40px;
 }
 

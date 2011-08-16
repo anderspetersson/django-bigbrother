@@ -5,24 +5,56 @@
   	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
 	<script type="text/javascript">
 	$(function () {
-		var d1 = [{% for s in stats %}[(new Date({{ s.added|date:"Y" }},{{ s.added|date:"n" }}, {{ s.added|date:"j" }})).getTime(), {{ s.value }}],{% endfor %}]
-	    $.plot($("#graph"), [d1], {
+		var weekdata = [{% for s in week %}[(new Date({{ s.added|date:"Y" }},{{ s.added|date:"n" }}, {{ s.added|date:"j" }})).getTime(), {{ s.value|stringformat:"f" }}],{% endfor %}]
+		var monthdata = [{% for s in month %}[(new Date({{ s.added|date:"Y" }},{{ s.added|date:"n" }}, {{ s.added|date:"j" }})).getTime(), {{ s.value|stringformat:"f" }}],{% endfor %}]
+		var yeardata = [{% for s in year %}[(new Date({{ s.added|date:"Y" }},{{ s.added|date:"n" }}, {{ s.added|date:"j" }})).getTime(), {{ s.value|stringformat:"f" }}],{% endfor %}]
+	    $.plot($("#week"), [weekdata], {
 				points: {show:true},
 				lines: {show:true},
-				xaxis: {	mode: "time",
+				xaxis: {mode: "time",
+						minTickSize: [1, "day"],
+						timeformat: "%y/%m/%d",
+						{% with week|first as first %}
+						min: (new Date({{first.added|date:"Y"}}, {{first.added|date:"n"}}, {{first.added|date:"j"}})).getTime(),
+						{% endwith %}
+						max: (new Date({{ lastdow|date:"Y" }}, {{ lastdow|date:"n" }}, {{ lastdow|date:"j" }})).getTime()
+						}
+        	});
+		    $.plot($("#month"), [monthdata], {
+					points: {show:true},
+					lines: {show:true},
+					xaxis: {mode: "time",
 							minTickSize: [1, "day"],
 							timeformat: "%y/%m/%d",
-							min: (new Date({{ first|date:"Y" }}, {{ first|date:"n" }}, {{ first|date:"j" }})).getTime(),
-							max: (new Date({{ last|date:"Y" }}, {{ last|date:"n" }}, {{ last|date:"j" }})).getTime()
-						},
-				barWidth: 1000000
-        	});
+							{% with week|first as first %}
+							min: (new Date({{first.added|date:"Y"}}, {{first.added|date:"n"}}, {{first.added|date:"j"}})).getTime(),
+							{% endwith %}
+							max: (new Date({{ lastdom|date:"Y" }}, {{ lastdom|date:"n" }}, {{ lastdom|date:"j" }})).getTime()
+							}
+	        	});
+			    $.plot($("#year"), [yeardata], {
+						points: {show:true},
+						lines: {show:true},
+						xaxis: {mode: "time",
+								minTickSize: [1, "day"],
+								timeformat: "%y/%m/%d",
+								{% with week|first as first %}
+								min: (new Date({{first.added|date:"Y"}}, {{first.added|date:"n"}}, {{first.added|date:"j"}})).getTime(),
+								{% endwith %}
+								max: (new Date({{ lastdoy|date:"Y" }}, {{ lastdoy|date:"n" }}, {{ lastdoy|date:"j" }})).getTime()
+								}
+		        	});
 	});
 	</script>
 {% endblock %}
 {% block content %}
 <div id="graphcontainer">
-	<h1>{{ stats.0.modulename }}</h1>
-	<div id="graph"></div>
+	<h1>{{ week.0.modulename }}</h1>
+	<h2>Last Week</h2>
+	<div id="week" class="graph"></div>
+	<h2>Last Month</h2>
+	<div id="month" class="graph"></div>
+	<h2>Last Year</h2>
+	<div id="year" class="graph"></div>
 </div>
 {% endblock %}
