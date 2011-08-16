@@ -1,3 +1,7 @@
+0.2.5
+- Fixed graphs only showing the first x days instead of the last x days.
+- Bigbrother now uses a default set of modules if settings.BIGBROTHER_MODULES is not set.
+
 0.2.4
 - Added weekly, montly and yearly graphs.
 - Fixed an error with floatformating in the JS causing floats to render as ints.
