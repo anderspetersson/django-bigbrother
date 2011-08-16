@@ -1,3 +1,8 @@
+0.2.4
+- Added weekly, montly and yearly graphs.
+- Fixed an error with floatformating in the JS causing floats to render as ints.
+- Graphs now use time-format, should look better now.
+
 0.2.3
 - Added shell script to add a cronjob for polling the update view.
 - Fixed an error preventing graph from showing.
