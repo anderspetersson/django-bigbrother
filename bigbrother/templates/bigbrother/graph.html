@@ -26,7 +26,7 @@
 					xaxis: {mode: "time",
 							minTickSize: [1, "day"],
 							timeformat: "%y/%m/%d",
-							{% with week|first as first %}
+							{% with month|first as first %}
 							min: (new Date({{first.added|date:"Y"}}, {{first.added|date:"n"}}, {{first.added|date:"j"}})).getTime(),
 							{% endwith %}
 							max: (new Date({{ lastdom|date:"Y" }}, {{ lastdom|date:"n" }}, {{ lastdom|date:"j" }})).getTime()
@@ -38,7 +38,7 @@
 						xaxis: {mode: "time",
 								minTickSize: [1, "day"],
 								timeformat: "%y/%m/%d",
-								{% with week|first as first %}
+								{% with year|first as first %}
 								min: (new Date({{first.added|date:"Y"}}, {{first.added|date:"n"}}, {{first.added|date:"j"}})).getTime(),
 								{% endwith %}
 								max: (new Date({{ lastdoy|date:"Y" }}, {{ lastdoy|date:"n" }}, {{ lastdoy|date:"j" }})).getTime()

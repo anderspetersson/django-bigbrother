@@ -21,9 +21,13 @@ def index(request):
     return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
 
 def graph(request, slug):
-    week = ModuleStat.objects.filter(modulename=slug)[0:7]
-    month = ModuleStat.objects.filter(modulename=slug)[0:31]
-    year = ModuleStat.objects.filter(modulename=slug)[0:365]
+    q = ModuleStat.objects.filter(modulename=slug)
+    if q.count() >= 7: week = q[q.count()-7:]
+    else: week = q
+    if q.count() >= 31: month = q[q.count()-31:]
+    else: month = q
+    if q.count() >= 365: year = q[q.count()-365:]
+    else: year = q
     lastdow = week[week.count()-1].added
     lastdom = month[month.count()-1].added
     lastdoy = year[year.count()-1].added
