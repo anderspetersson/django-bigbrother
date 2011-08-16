@@ -9,16 +9,26 @@ Django Bigbrother is a modular dashboard app for Django projects.
 
 ## Installation
 
-		pip install django-bigbrother
-		
-Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ship with a shellscript to make this easy:
-		
+1. pip install django-bigbrother
+
+2. Add `bigbrother` to your `INSTALLED_APPS`
+
+3. Include `bigbrother.urls` in your top level urls:
+
+		urlpatterns = patterns('', 
+			# ...
+			url(r'^bigbrother/', include('bigbrother.urls')))
+
+Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
 		$ bigbrother_install.sh
+		Please enter URL to your project. For example: http://www.yoururl.com
+		http://www.mywebsite.com
+		Installed cronjob: 59   23  *    *   * wget http://www.mywebsite.com/bigbrother/update/
+		
 	
 ## Configuration
 
-1. Add `bigbrother` to your `INSTALLED_APPS`
-2. Add modules to `BIGBROTHER_MODULES` in settings.py
+Bigbrother ships with a few modules, currently all modules are enabled by default. If you want to remove a module, use the  `BIGBROTHER_MODULES` setting:
 
 		BIGBROTHER_MODULES = (
 	    	'bigbrother.core.UserCount',
@@ -26,12 +36,6 @@ Recommended, but not needed, is to add a cronjob to poll the update view. django
 	    	'bigbrother.core.FreeRamCount',
 	    	'bigbrother.core.FreeDiskCount',
 		)
-
-3. Include `bigbrother.urls` in your top level urls:
-
-		urlpatterns = patterns('', 
-			# ...
-			url(r'^bigbrother/', include('bigbrother.urls')))
 			
 ## Extending Bigbrother
 

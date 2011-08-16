@@ -2,6 +2,16 @@ import datetime
 import os
 import psutil
 from django.template.defaultfilters import slugify
+from django.conf import settings
+
+def get_module_list():
+    default_modules = (
+        'bigbrother.core.UserCount',
+        'bigbrother.core.NewUsersTodayCount',
+        'bigbrother.core.FreeRamCount',
+        'bigbrother.core.FreeDiskCount',
+    )
+    return getattr(settings, 'BIGBROTHER_MODULES', default_modules)
 
 class BigBrotherModule():
     name = 'Unamed'

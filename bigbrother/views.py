@@ -5,13 +5,14 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from bigbrother.models import ModuleStat
+from bigbrother.core import get_module_list
 
 
 def index(request):
     
     bb = []
 
-    for m in settings.BIGBROTHER_MODULES:
+    for m in get_module_list():
         modulename, attr = m.rsplit('.', 1)
         module = import_module(modulename)
         name = getattr(module,attr)().name
@@ -37,7 +38,7 @@ def update(request):
     
     bb = []
     
-    for m in settings.BIGBROTHER_MODULES:
+    for m in get_module_list():
         modulename, attr = m.rsplit('.', 1)
         module = import_module(modulename)
         
