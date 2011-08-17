@@ -19,7 +19,8 @@ Django Bigbrother is a modular dashboard app for Django projects.
 			# ...
 			url(r'^bigbrother/', include('bigbrother.urls')))
 
-Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
+4. Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
+
 		$ bigbrother_install.sh
 		Please enter URL to your project. For example: http://www.yoururl.com
 		http://www.mywebsite.com
