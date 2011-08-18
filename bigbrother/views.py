@@ -29,9 +29,11 @@ def graph(request, slug):
     else: month = q
     if q.count() >= 365: year = q[q.count()-365:]
     else: year = q
-    lastdow = week[week.count()-1].added
-    lastdom = month[month.count()-1].added
-    lastdoy = year[year.count()-1].added
+    
+    if q:
+        lastdow = week[week.count()-1].added
+        lastdom = month[month.count()-1].added
+        lastdoy = year[year.count()-1].added
     return render_to_response('bigbrother/graph.html', locals(), context_instance=RequestContext(request))
 
 def update(request):
