@@ -14,7 +14,7 @@ def get_module_list():
     return getattr(settings, 'BIGBROTHER_MODULES', default_modules)
 
 class BigBrotherModule():
-    name = 'Unamed'
+    name = 'Unamed Module'
     write_to_db = True
     prepend_text = ''
     add_text = ''
@@ -31,8 +31,6 @@ class BigBrotherModule():
         return slugify(self.name)
 
     def warning(self):
-
-
         if self.get_val() >= self.warning_high and self.warning_high != None:
             return True
         if self.get_val() <= self.warning_low and self.warning_low != None:
@@ -61,8 +59,7 @@ class NewUsersTodayCount(BigBrotherModule):
 class FreeRamCount(BigBrotherModule):
     name = 'Free RAM'
     add_text = ' MB'
-    warning_high = None
-    warning_low = 5000
+    warning_low = 16
 
     def get_val(self):
         return psutil.phymem_usage()[2] / (1024 * 1024)
@@ -70,6 +67,7 @@ class FreeRamCount(BigBrotherModule):
 class SwapUsage(BigBrotherModule):
     name = 'Swap Usage'
     add_text = ' MB'
+    warning_high = 1
 
     def get_val(self):
         return psutil.virtmem_usage()[1] / (1024 * 1024)
