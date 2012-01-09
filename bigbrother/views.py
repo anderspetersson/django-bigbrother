@@ -16,8 +16,10 @@ def index(request):
         modulename, attr = m.rsplit('.', 1)
         module = import_module(modulename)
         name = getattr(module,attr)().name
-        value = getattr(module,attr)().get_text()
-        bb.append({'name':name, 'value':value})
+        text = getattr(module,attr)().get_text()
+        value = getattr(module,attr)().get_val()
+        warning = getattr(module,attr)().warning()
+        bb.append({'name':name, 'value':value, 'text':text, 'warning':warning})
     
     return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
 

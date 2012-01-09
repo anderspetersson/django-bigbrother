@@ -18,6 +18,8 @@ class BigBrotherModule():
     write_to_db = True
     prepend_text = ''
     add_text = ''
+    warning_low = None
+    warning_high = None
     
     def get_val(self):
         return None
@@ -27,6 +29,15 @@ class BigBrotherModule():
         
     def get_slug(self):
         return slugify(self.name)
+
+    def warning(self):
+
+
+        if self.get_val() >= self.warning_high and self.warning_high != None:
+            return True
+        if self.get_val() <= self.warning_low and self.warning_low != None:
+            return True
+        return False
 
 class UserCount(BigBrotherModule):
     name = 'Total Users'
@@ -50,16 +61,18 @@ class NewUsersTodayCount(BigBrotherModule):
 class FreeRamCount(BigBrotherModule):
     name = 'Free RAM'
     add_text = ' MB'
-    
+    warning_high = None
+    warning_low = 5000
+
     def get_val(self):
-        return psutil.phymem_usage() / (1024 * 1024)
+        return psutil.phymem_usage()[2] / (1024 * 1024)
 
 class SwapUsage(BigBrotherModule):
-    name 'Swap Usage'
+    name = 'Swap Usage'
     add_text = ' MB'
 
     def get_val(self):
-        return psutil.virtmem_usage() / (1024 * 1024)
+        return psutil.virtmem_usage()[1] / (1024 * 1024)
 
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'

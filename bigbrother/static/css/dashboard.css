@@ -134,6 +134,10 @@ h2{
     margin-bottom:0;
 }
 
+a.warning{
+    color:#ff0000;
+}
+
 #graphcontainer{
     margin:0 auto;
     width:700px;

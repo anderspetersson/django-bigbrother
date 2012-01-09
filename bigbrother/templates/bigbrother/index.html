@@ -21,7 +21,11 @@
 						<h2>{{ m.name }}</h2>
 					</div>
 					<div class="num">
-						<h1><a href="{% url bigbrother.views.graph slug=m.name|slugify %}">{{ m.value }}</a></h1>
+						<h1>
+							<a href="{% url bigbrother.views.graph slug=m.name|slugify %}" 
+							{% if m.warning %}class="warning"{% endif %}>{{ m.text }}
+							</a>
+						</h1>
 					</div>
 				</li>
 				{% endfor %}
