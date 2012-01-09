@@ -52,7 +52,7 @@ class FreeRamCount(BigBrotherModule):
     add_text = ' MB'
     
     def get_val(self):
-        return psutil.avail_phymem() / (1024 * 1024)
+        return psutil.phymem_usage() / (1024 * 1024)
 
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'
