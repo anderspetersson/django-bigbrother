@@ -59,11 +59,25 @@ class UserCount(BigBrotherModule):
         return users.count()
 ```
 		
-More examples can be found in [core.py](https://github.com/anderspetersson/django-bigbrother/blob/master/bigbrother/core.py)
+### The BigBrotherModule Class have the following attributes:
+
+`name`: A string representing the name of the module. Defaults to 'Unamed Module'
+
+`write_to_db`: Boolean, set to False if you don't want to save stats from this module to the database. Defaults to True
+
+`prepend_text`: String that's beeing added before the actual value on the Dashboard. Defaults to an empty string.
+
+`add_text`: String that's beeing added after the actual value on the Dashboard. Defaults to an empty string.
+
+`warning_low`: Integer or float. Warn bigbrother if the value is equal or less than this value. Set this to None (the default) to disable.
+
+`warning_high`: Integer or float. Warn bigbrother if the value is equal or higher than this value. Set this to None (the default) to disable.
 
 ## Tracking data for graphs
 
 New in Bigbrother 0.2.0 is the ability to save data and show graphs. This is still in a very early stage. To save data to the database, goto yoururl.com/bigbrother/update/. Setting up a cronjob to do this at midnight every day is recommended. The graphs does currently only support one data entry per day.
+
+The goal is to add functionality to do this via Selery's perodic tasks, or simular in the future.
 
 ## Screenshot
 
