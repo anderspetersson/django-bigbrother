@@ -54,6 +54,13 @@ class FreeRamCount(BigBrotherModule):
     def get_val(self):
         return psutil.phymem_usage() / (1024 * 1024)
 
+class SwapUsage(BigBrotherModule):
+    name 'Swap Usage'
+    add_text = ' MB'
+
+    def get_val(self):
+        return psutil.virtmem_usage() / (1024 * 1024)
+
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'
     add_text = ' GB'

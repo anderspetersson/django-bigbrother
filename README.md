@@ -5,7 +5,7 @@ Django Bigbrother is a modular dashboard app for Django projects.
 ## Requirements
 
 * django >= 1.3 (http://pypi.python.org/pypi/django/)
-* psutil >= 2.1 (http://code.google.com/p/psutil/)
+* psutil >= 0.3 (http://code.google.com/p/psutil/)
 
 ## Installation
 
@@ -29,13 +29,17 @@ Django Bigbrother is a modular dashboard app for Django projects.
 	
 ## Configuration
 
-Bigbrother ships with a few modules, currently all modules are enabled by default. If you want to remove a module, use the  `BIGBROTHER_MODULES` setting:
+Bigbrother ships with a few modules. If you want to remove a or add a module, use the  `BIGBROTHER_MODULES` setting:
 
 		BIGBROTHER_MODULES = (
+			# Default Modules:
 	    	'bigbrother.core.UserCount',
 	    	'bigbrother.core.NewUsersTodayCount',
 	    	'bigbrother.core.FreeRamCount',
 	    	'bigbrother.core.FreeDiskCount',
+
+	    	# Modules not enabled by default:
+	    	'bigbrother.core.SwapUsage',
 		)
 			
 ## Extending Bigbrother
