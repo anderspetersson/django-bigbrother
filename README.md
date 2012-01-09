@@ -39,7 +39,7 @@ Bigbrother ships with a few modules. If you want to remove a or add a module, us
 	    	'bigbrother.core.FreeDiskCount',
 
 	    	# Modules not enabled by default:
-	    	'bigbrother.core.SwapUsage',
+	    	# 'bigbrother.core.SwapUsage',
 		)
 			
 ## Extending Bigbrother
@@ -70,3 +70,4 @@ New in Bigbrother 0.2.0 is the ability to save data and show graphs. This is sti
 This is how it looks. (With 2 custom modules).
 
 ![Screenshot](http://c544632.r32.cf2.rackcdn.com/bigbrother.png)
+![Screenshot](http://c544632.r32.cf2.rackcdn.com/bigbrother-graph.png)
