@@ -46,7 +46,7 @@ Bigbrother ships with a few modules. If you want to remove a or add a module, us
 
 Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-module is subclass of bigbrother.core.BigBrotherModule, with a "get_val"-method returning the stat you are monitoring, and the value of it. Custom modules can live anywhere in your app, just put the full path to it in BIGBROTHER_MODULES. 
 
-Example module returning number of total users for your site:
+### Example module returning number of total users for your site:
 		
 ```python
 from bigbrother.core import BigBrotherModule
@@ -71,7 +71,7 @@ class UserCount(BigBrotherModule):
 
 `warning_low`: Integer or float. Warn bigbrother if the value is equal or less than this value. Set this to None (the default) to disable.
 
-`warning_high`: Integer or float. Warn bigbrother if the value is equal or higher than this value. Set this to None (the default) to disable.
+`warning_high`: Integer or float. Warn bigbrother if the value is equal or higher than this value. Set to None (the default) to disable.
 
 ## Tracking data for graphs
 
