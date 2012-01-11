@@ -18,7 +18,7 @@ def index(request):
         name = getattr(module,attr)().name
         text = getattr(module,attr)().get_text()
         value = getattr(module,attr)().get_val()
-        warning = getattr(module,attr)().warning()
+        warning = getattr(module,attr)().check_warning()
         bb.append({'name':name, 'value':value, 'text':text, 'warning':warning})
     
     return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
@@ -45,6 +45,8 @@ def update(request):
     for m in get_module_list():
         modulename, attr = m.rsplit('.', 1)
         module = import_module(modulename)
+
+        warning = getattr(module,attr)().check_warning()
         
         if getattr(module,attr)().write_to_db:
             name = getattr(module,attr)().get_slug()

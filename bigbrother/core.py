@@ -3,6 +3,7 @@ import os
 import psutil
 from django.template.defaultfilters import slugify
 from django.conf import settings
+from bigbrother.warnings import send_warning
 
 def get_module_list():
     default_modules = (
@@ -30,12 +31,18 @@ class BigBrotherModule():
     def get_slug(self):
         return slugify(self.name)
 
-    def warning(self):
+    def check_warning(self):
         if self.get_val() >= self.warning_high and self.warning_high != None:
+            self.warn(warningtype='high')
             return True
         if self.get_val() <= self.warning_low and self.warning_low != None:
+            self.warn(warningtype='low')
             return True
         return False
+    
+    def warn(self, warningtype):
+        send_warning(module=self.__class__, warningtype=warningtype)
+
 
 class UserCount(BigBrotherModule):
     name = 'Total Users'
