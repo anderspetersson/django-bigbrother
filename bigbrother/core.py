@@ -21,6 +21,7 @@ class BigBrotherModule():
     add_text = ''
     warning_low = None
     warning_high = None
+    link_url = None
     
     def get_val(self):
         return None
