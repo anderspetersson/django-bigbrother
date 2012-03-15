@@ -18,11 +18,11 @@
 				{% for m in bb %}
 				<li>
 					<div class="head">
-                                        {{ if m.link_url }}
-						<h2><a href="{{m.link}}">{{ m.name }}</a></h2>
-                                        {{ else }}
+                                        {% if m.link_url %}
+						<h2><a target=_new href="{{m.link}}">{{ m.name }}</a></h2>
+                                        {% else %}
 						<h2>{{ m.name }}</h2>
-                                        {{ endif }}
+                                        {% endif %}
 					</div>
 					<div class="num">
 						<h1>
