@@ -19,7 +19,8 @@ def index(request):
         text = getattr(module,attr)().get_text()
         value = getattr(module,attr)().get_val()
         warning = getattr(module,attr)().check_warning()
-        bb.append({'name':name, 'value':value, 'text':text, 'warning':warning})
+        link = getattr(module,attr)().link_url
+        bb.append({'name':name, 'value':value, 'text':text, 'warning':warning, 'link':link})
     
     return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
 
