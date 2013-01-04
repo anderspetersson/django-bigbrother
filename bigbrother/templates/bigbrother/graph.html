@@ -1,8 +1,8 @@
 {% extends "bigbrother/index.html" %}
 
 {% block extrajs %}
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-  	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  	<script src="{{ STATIC_URL }}js/jquery.flot.js"></script>
 	<script type="text/javascript">
 	$(function () {
 		var weekdata = [{% for s in week %}[(new Date({{ s.added|date:"Y" }},{{ s.added|date:"n" }}, {{ s.added|date:"j" }})).getTime(), {{ s.value|stringformat:"f" }}],{% endfor %}]
