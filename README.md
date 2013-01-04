@@ -13,13 +13,15 @@ Django Bigbrother is a modular dashboard app for Django projects.
 
 2. Add `bigbrother` to your `INSTALLED_APPS`
 
-3. Include `bigbrother.urls` in your top level urls:
+3. Run `python manage.py syncdb`
+
+4. Include `bigbrother.urls` in your top level urls:
 
 		urlpatterns = patterns('', 
 			# ...
 			url(r'^bigbrother/', include('bigbrother.urls')))
 
-4. Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
+5. Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
 
 		$ bigbrother_install.sh
 		Please enter URL to your project. For example: http://www.yoururl.com
