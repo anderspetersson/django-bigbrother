@@ -1,5 +1,18 @@
 {% extends "bigbrother/index.html" %}
 
+{% block content %}
+<div id="graphcontainer">
+	<h1>{{ week.0.modulename }}</h1>
+	<h2>Last Week</h2>
+	<div id="week" class="graph"></div>
+	<h2>Last Month</h2>
+	<div id="month" class="graph"></div>
+	<h2>Last Year</h2>
+	<div id="year" class="graph"></div>
+</div>
+{% endblock %}
+
+
 {% block extrajs %}
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   	<script src="{{ STATIC_URL }}js/jquery.flot.js"></script>
@@ -46,15 +59,4 @@
 		        	});
 	});
 	</script>
-{% endblock %}
-{% block content %}
-<div id="graphcontainer">
-	<h1>{{ week.0.modulename }}</h1>
-	<h2>Last Week</h2>
-	<div id="week" class="graph"></div>
-	<h2>Last Month</h2>
-	<div id="month" class="graph"></div>
-	<h2>Last Year</h2>
-	<div id="year" class="graph"></div>
-</div>
 {% endblock %}
