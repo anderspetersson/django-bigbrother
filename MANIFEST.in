@@ -1,4 +1,4 @@
-include setup.py README.md MANIFEST.in LICENSE
+include setup.py README.md MANIFEST.in LICENCE
 recursive-include bigbrother/templates *
 recursive-include bigbrother/static *
 global-exclude *~
