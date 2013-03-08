@@ -1,9 +1,10 @@
 import datetime
-import os
-import psutil
+from django.utils.importlib import import_module
 from django.template.defaultfilters import slugify
 from django.conf import settings
+from bigbrother.models import ModuleStat
 from bigbrother.warnings import send_warning
+
 
 def get_module_list():
     default_modules = (
@@ -14,29 +15,61 @@ def get_module_list():
     )
     return getattr(settings, 'BIGBROTHER_MODULES', default_modules)
 
+
+def update_modules():
+    for m in get_module_list():
+        modulename, attr = m.rsplit('.', 1)
+        try:
+            module = import_module(modulename)
+        except ImportError:
+            continue
+        cls = getattr(module, attr, None)
+        if not cls:
+            continue
+
+        instance = cls()
+        if instance.write_to_db:
+            ModuleStat.objects.create(name=instance.get_slug(), value=instance.get_val())
+
+
 class BigBrotherModule():
-    name = 'Unamed Module'
+    name = 'Unnamed Module'
     write_to_db = True
     prepend_text = ''
     add_text = ''
     warning_low = None
     warning_high = None
     link_url = None
+
+    def check_compatible(self):
+        return True
     
     def get_val(self):
+        """
+        Returns the current value
+        """
         raise NotImplementedError('get_val not implemented.')
         
     def get_text(self):
+        """
+        Returns the current value as formatted text
+        """
         return '%s%g%s' % (self.prepend_text, self.get_val(), self.add_text)
         
     def get_slug(self):
+        """
+        Returns the URL friendly slug for the module
+        """
         return slugify(self.name)
 
     def check_warning(self):
-        if self.warning.high and self.get_val() >= self.warning_high:
+        """
+        Check if a warning level has been breached
+        """
+        if self.warning_high and self.get_val() >= self.warning_high:
             self.warn(warningtype='high')
             return True
-        if self.warning.low and self.get_val() <= self.warning_low:
+        if self.warning_low and self.get_val() <= self.warning_low:
             self.warn(warningtype='low')
             return True
         return False
@@ -77,21 +110,46 @@ class FreeRamCount(BigBrotherModule):
     add_text = ' MB'
     warning_low = 16
 
+    def check_compatible(self):
+        try:
+            import psutil
+        except ImportError:
+            return False
+        return True
+
     def get_val(self):
+        import psutil
         return psutil.phymem_usage()[2] / (1024 * 1024)
+
 
 class SwapUsage(BigBrotherModule):
     name = 'Swap Usage'
     add_text = ' MB'
     warning_high = 1
 
+    def check_compatible(self):
+        try:
+            import psutil
+        except ImportError:
+            return False
+        return True
+
     def get_val(self):
+        import psutil
         return psutil.virtmem_usage()[1] / (1024 * 1024)
+
 
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'
     add_text = ' GB'
-    
+
+    def check_compatible(self):
+        import platform
+        if platform.system() == 'Windows':
+            return False
+        return True
+
     def get_val(self):
-        s = os.statvfs('/')
-        return round((s.f_bavail * s.f_frsize) / ( 1024 * 1024 * 1024.0 ), 1)
+        import os
+        s = os.statvfs(os.path.split(os.getcwd())[0])
+        return round((s.f_bavail * s.f_frsize) / (1024 * 1024 * 1024.0), 1)
