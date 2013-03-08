@@ -24,7 +24,7 @@ class BigBrotherModule():
     link_url = None
     
     def get_val(self):
-        return None
+        raise NotImplementedError('get_val not implemented.')
         
     def get_text(self):
         return '%s%g%s' % (self.prepend_text, self.get_val(), self.add_text)
@@ -33,10 +33,10 @@ class BigBrotherModule():
         return slugify(self.name)
 
     def check_warning(self):
-        if self.get_val() >= self.warning_high and self.warning_high != None:
+        if self.warning.high and self.get_val() >= self.warning_high:
             self.warn(warningtype='high')
             return True
-        if self.get_val() <= self.warning_low and self.warning_low != None:
+        if self.warning.low and self.get_val() <= self.warning_low:
             self.warn(warningtype='low')
             return True
         return False
