@@ -69,12 +69,6 @@ class UserCount(BigBrotherModule):
 
 `warning_high`: Integer or float. Warn bigbrother if the value is equal or higher than this value. Set to None (the default) to disable.
 
-## Tracking data for graphs
-
-New in Bigbrother 0.2.0 is the ability to save data and show graphs. This is still in a very early stage. To save data to the database, goto yoururl.com/bigbrother/update/. Setting up a cronjob to do this at midnight every day is recommended. The graphs does currently only support one data entry per day.
-
-The goal is to add functionality to do this via Selery's perodic tasks, or simular in the future.
-
 ## Screenshot
 
 This is how it looks. (With 2 custom modules).
