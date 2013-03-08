@@ -31,7 +31,8 @@ def update_modules():
         if not instance.check_compatible():
             continue
         if instance.write_to_db:
-            ModuleStat.objects.create(name=instance.get_slug(), value=instance.get_val())
+            print instance.get_slug(), instance.get_val()
+            ModuleStat.objects.create(modulename=instance.get_slug(), value=instance.get_val())
 
 
 class BigBrotherModule():
