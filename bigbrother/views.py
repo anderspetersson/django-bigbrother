@@ -58,12 +58,12 @@ class BigBrotherGraphView(TemplateView):
 
         week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow())
         month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow())
-        year = qs.time_series(datetime.utcnow() - timedelta(weeks=52), datetime.utcnow())
+        year = qs.time_series(datetime.utcnow() - timedelta(weeks=52), datetime.utcnow(), interval='weeks')
 
         return {
             'week': week, 'month': month, 'year': year,
-            'lastdow': week[-1][0], 'lastdom': month[-1][0], 'lastdoy': month[-1][0],
-            'firstdow': week[0][0], 'firstdom': month[0][0], 'firstdoy': month[0][0],
+            'lastdow': week[-1][0], 'lastdom': month[-1][0], 'lastdoy': year[-1][0],
+            'firstdow': week[0][0], 'firstdom': month[0][0], 'firstdoy': year[0][0],
         }
 
     def get_context_data(self, **kwargs):
