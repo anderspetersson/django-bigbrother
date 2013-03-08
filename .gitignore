@@ -3,3 +3,4 @@ dist/
 build/
 django_bigbrother.egg-info/*
 django-bigrother.egg-info/*
+.idea
