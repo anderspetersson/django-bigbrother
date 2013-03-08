@@ -14,7 +14,6 @@ METADATA = dict(
     keywords='django dashboard bigbrother monitoring',
     install_requires=requirements,
     include_package_data=True,
-    scripts = ['bigbrother/bin/bigbrother_install.sh'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
