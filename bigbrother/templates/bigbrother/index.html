@@ -25,7 +25,7 @@
 					</div>
 					<div class="num">
 						<h1>
-							<a href="{% url bigbrother.views.graph slug=m.name|slugify %}" 
+							<a href="{% url "bigbrother_graph" slug=m.name|slugify %}"
 							{% if m.warning %}class="warning"{% endif %}>{{ m.text }}
 							</a>
 						</h1>
