@@ -55,9 +55,11 @@ class UserCount(BigBrotherModule):
         return users.count()
 ```
 		
-### The BigBrotherModule Class have the following attributes:
+### The BigBrotherModule Class have the following functions/attributes:
 
 `name`: A string representing the name of the module. Defaults to 'Unamed Module'
+
+`check_compatible`: A function returning a boolean indicating that the module's dependencies have been met can it can execute.
 
 `write_to_db`: Boolean, set to False if you don't want to save stats from this module to the database. Defaults to True
 
