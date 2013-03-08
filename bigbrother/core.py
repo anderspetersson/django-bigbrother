@@ -16,7 +16,7 @@ def get_module_list():
     return getattr(settings, 'BIGBROTHER_MODULES', default_modules)
 
 
-def update_modules():
+def update_modules(logger=None):
     for m in get_module_list():
         modulename, attr = m.rsplit('.', 1)
         try:
@@ -31,7 +31,8 @@ def update_modules():
         if not instance.check_compatible():
             continue
         if instance.write_to_db:
-            print instance.get_slug(), instance.get_val()
+            if logger:
+                logger.debug('Saving %s - Value: %.2f' % (instance.get_slug(), instance.get_val()))
             ModuleStat.objects.create(modulename=instance.get_slug(), value=instance.get_val())
 
 
