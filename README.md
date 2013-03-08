@@ -21,14 +21,8 @@ Django Bigbrother is a modular dashboard app for Django projects.
 			# ...
 			url(r'^bigbrother/', include('bigbrother.urls')))
 
-5. Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
+5. To update statistics you can either call `update_modules()` in `bigbrother.core` or using the `update_bigbrother` management command.
 
-		$ bigbrother_install.sh
-		Please enter URL to your project. For example: http://www.yoururl.com
-		http://www.mywebsite.com
-		Installed cronjob: 59   23  *    *   * wget http://www.mywebsite.com/bigbrother/update/
-		
-	
 ## Configuration
 
 Bigbrother ships with a few modules. If you want to remove a or add a module, use the  `BIGBROTHER_MODULES` setting:
