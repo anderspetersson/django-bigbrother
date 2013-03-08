@@ -49,8 +49,12 @@ class UserCount(BigBrotherModule):
     name = 'Total Users'
     
     def get_val(self):
-        from django.contrib.auth.models import User
-        users = User.objects.all()
+        try:
+            from django.contrib.auth import get_user_model
+            USER_MODEL = get_user_model()
+        except ImportError:
+            from django.contrib.auth.models import User as USER_MODEL
+        users = USER_MODEL.objects.all()
         return users.count()
 
         
@@ -58,9 +62,13 @@ class NewUsersTodayCount(BigBrotherModule):
     name = 'New Users Today'
     
     def get_val(self):
-        from django.contrib.auth.models import User
+        try:
+            from django.contrib.auth import get_user_model
+            USER_MODEL = get_user_model()
+        except ImportError:
+            from django.contrib.auth.models import User as USER_MODEL
         curday = datetime.datetime.today()
-        users = User.objects.filter(date_joined__year=curday.year, date_joined__month=curday.month, date_joined__day=curday.day)
+        users = USER_MODEL.objects.filter(date_joined__year=curday.year, date_joined__month=curday.month, date_joined__day=curday.day)
         return users.count()
 
 
