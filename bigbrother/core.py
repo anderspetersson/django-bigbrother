@@ -28,6 +28,8 @@ def update_modules():
             continue
 
         instance = cls()
+        if not instance.check_compatible():
+            continue
         if instance.write_to_db:
             ModuleStat.objects.create(name=instance.get_slug(), value=instance.get_val())
 
