@@ -7,6 +7,8 @@ Django Bigbrother is a modular dashboard app for Django projects.
 * django >= 1.3 (http://pypi.python.org/pypi/django/)
 * psutil >= 0.3 (http://code.google.com/p/psutil/)
 
+To note, Django 1.4/1.5 do not support timezone sensitive aggregations, so all graphs will return zero values with `USE_TZ` set to `True`.  This has been [resolved](https://github.com/django/django/pull/715) in Django trunk, which should be in for the next release.
+
 ## Installation
 
 1. pip install django-bigbrother
