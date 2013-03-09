@@ -16,7 +16,11 @@ def get_module_list():
     return getattr(settings, 'BIGBROTHER_MODULES', default_modules)
 
 
-def update_modules(logger=None):
+def get_module_classes():
+    """
+    Returns all the module classes defined in the settings
+    """
+    clslist = []
     for m in get_module_list():
         modulename, attr = m.rsplit('.', 1)
         try:
@@ -26,7 +30,24 @@ def update_modules(logger=None):
         cls = getattr(module, attr, None)
         if not cls:
             continue
+        clslist.append(cls)
+    return clslist
 
+
+def get_module_by_slug(slug):
+    """
+    Searches for a module by slug
+    """
+    for cls in get_module_classes():
+        if cls().get_slug() == slug:
+            return cls
+
+
+def update_modules(logger=None):
+    """
+    Process all module updates
+    """
+    for cls in get_module_classes():
         instance = cls()
         if not instance.check_compatible():
             continue

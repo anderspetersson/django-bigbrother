@@ -6,7 +6,7 @@ from django.db.models import Avg
 import qsstats
 
 from bigbrother.models import ModuleStat
-from bigbrother.core import get_module_list
+from bigbrother.core import get_module_classes, get_module_by_slug
 
 
 class BigBrotherIndexView(TemplateView):
@@ -18,18 +18,8 @@ class BigBrotherIndexView(TemplateView):
 
     def get_overview_data(self):
         data = []
-        for m in get_module_list():
-            modulename, attr = m.rsplit('.', 1)
-            try:
-                module = import_module(modulename)
-            except ImportError:
-                continue
-            cls = getattr(module, attr, None)
-            if not cls:
-                continue
+        for cls in get_module_classes():
             instance = cls()
-            if not instance.check_compatible():
-                continue
             data.append({'name': instance.name,
                          'value': instance.get_val(),
                          'text': instance.get_text(),
@@ -53,7 +43,8 @@ class BigBrotherGraphView(TemplateView):
     template_name = 'bigbrother/graph.html'
 
     def get_graph_data(self):
-        q = ModuleStat.objects.filter(modulename=self.kwargs.get('slug'))
+        slug = self.kwargs.get('slug')
+        q = ModuleStat.objects.filter(modulename=slug)
         qs = qsstats.QuerySetStats(q, 'added', Avg('value'))
 
         week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow())
@@ -64,6 +55,7 @@ class BigBrotherGraphView(TemplateView):
             'week': week, 'month': month, 'year': year,
             'lastdow': week[-1][0], 'lastdom': month[-1][0], 'lastdoy': year[-1][0],
             'firstdow': week[0][0], 'firstdom': month[0][0], 'firstdoy': year[0][0],
+            'modulename': get_module_by_slug(slug)().name,
         }
 
     def get_context_data(self, **kwargs):
