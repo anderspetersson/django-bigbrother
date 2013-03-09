@@ -43,8 +43,9 @@ class BigBrotherGraphView(TemplateView):
 
     def get_graph_data(self):
         slug = self.kwargs.get('slug')
+        module = get_module_by_slug(slug)()
         q = ModuleStat.objects.filter(modulename=slug)
-        qs = qsstats.QuerySetStats(q, 'added', Avg('value'))
+        qs = qsstats.QuerySetStats(q, 'added', module.get_aggregate_function() or Avg('value'))
 
         week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow())
         month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow())
@@ -54,7 +55,7 @@ class BigBrotherGraphView(TemplateView):
             'week': week, 'month': month, 'year': year,
             'lastdow': week[-1][0], 'lastdom': month[-1][0], 'lastdoy': year[-1][0],
             'firstdow': week[0][0], 'firstdom': month[0][0], 'firstdoy': year[0][0],
-            'modulename': get_module_by_slug(slug)().name,
+            'modulename': module.name,
         }
 
     def get_context_data(self, **kwargs):

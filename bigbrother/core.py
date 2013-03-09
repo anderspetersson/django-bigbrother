@@ -65,10 +65,14 @@ class BigBrotherModule():
     warning_low = None
     warning_high = None
     link_url = None
+    aggregate_function = None
 
     def check_compatible(self):
         return True
-    
+
+    def get_aggregate_function(self):
+        return self.aggregate_function
+
     def get_val(self):
         """
         Returns the current value
