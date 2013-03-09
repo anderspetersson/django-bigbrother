@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from django.utils.importlib import import_module
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 from django.db.models import Avg
