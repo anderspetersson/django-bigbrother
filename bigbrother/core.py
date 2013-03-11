@@ -61,16 +61,29 @@ def update_modules(logger=None):
 
 
 class BigBrotherModule():
+    """
+    Base class for all BigBrother modules that implements the basic skeleton required for a module.
+    """
+
+    #: The human readable display name for the module
     name = 'Unnamed Module'
+    #: Flag to indicate it should be processed by the update function and store the results in the DB.
     write_to_db = True
-    prefix_text = ''
-    suffix_text = ''
+    #: Text to be prefixed onto the display version of the module's value
+    prefix_text = None
+    #: Text to be suffixed onto the display version of the module's value
+    suffix_text = None
     warning_low = None
     warning_high = None
     link_url = None
+    #: The Django ORM aggregation object to be used for aggregating the data for graph data.
     aggregate_function = None
 
     def check_compatible(self):
+        """
+        Checks if this module can operate in the current enviroment. It is suggested that you check dependencies in
+        this function.
+        """
         return True
 
     def get_aggregate_function(self):
@@ -89,13 +102,13 @@ class BigBrotherModule():
         """
         Get the text to prefix the value with, for example $ for monetary values.
         """
-        return self.prefix_text
+        return self.prefix_text or ''
 
     def get_suffix_text(self):
         """
         Get the suffix for the value, for example "Users" for a user count.
         """
-        return self.suffix_text
+        return self.suffix_text or ''
 
     def get_text(self):
         """
