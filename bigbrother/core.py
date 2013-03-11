@@ -144,8 +144,7 @@ class NewUsersTodayCount(BigBrotherModule):
             USER_MODEL = get_user_model()
         except ImportError:
             from django.contrib.auth.models import User as USER_MODEL
-        curday = datetime.datetime.today()
-        users = USER_MODEL.objects.filter(date_joined__year=curday.year, date_joined__month=curday.month, date_joined__day=curday.day)
+        users = USER_MODEL.objects.filter(date_joined=datetime.date.today())
         return users.count()
 
 
