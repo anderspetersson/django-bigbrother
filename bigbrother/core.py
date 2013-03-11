@@ -124,7 +124,13 @@ class BigBrotherModule():
 
 class UserCount(BigBrotherModule):
     name = 'Total Users'
-    
+
+    def check_compatible(self):
+        from django.conf import settings
+        if 'django.contrib.auth' in settings.INSTALLED_APPS:
+            return True
+        return False
+
     def get_val(self):
         try:
             from django.contrib.auth import get_user_model
@@ -137,7 +143,13 @@ class UserCount(BigBrotherModule):
         
 class NewUsersTodayCount(BigBrotherModule):
     name = 'New Users Today'
-    
+
+    def check_compatible(self):
+        from django.conf import settings
+        if 'django.contrib.auth' in settings.INSTALLED_APPS:
+            return True
+        return False
+
     def get_val(self):
         try:
             from django.contrib.auth import get_user_model
