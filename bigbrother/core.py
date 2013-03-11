@@ -7,6 +7,9 @@ from bigbrother.warnings import send_warning
 
 
 def get_module_list():
+    """
+    Returns a list of currently enabled modules.
+    """
     default_modules = (
         'bigbrother.core.UserCount',
         'bigbrother.core.NewUsersTodayCount',
@@ -123,6 +126,9 @@ class BigBrotherModule():
 
 
 class UserCount(BigBrotherModule):
+    """
+    Module providing a count of users from django.contrib.auth
+    """
     name = 'Total Users'
 
     def check_compatible(self):
@@ -142,6 +148,9 @@ class UserCount(BigBrotherModule):
 
         
 class NewUsersTodayCount(BigBrotherModule):
+    """
+    Module providing a count of new users from django.contrib.auth
+    """
     name = 'New Users Today'
 
     def check_compatible(self):
