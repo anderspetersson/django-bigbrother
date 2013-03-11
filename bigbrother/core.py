@@ -53,7 +53,7 @@ def update_modules(logger=None):
             continue
         if instance.write_to_db:
             if logger:
-                logger.debug('Saving %s - Value: %.2f' % (instance.get_slug(), instance.get_val()))
+                logger.debug('Saving %s - Value: %.2f' % (instance.name, instance.get_val()))
             ModuleStat.objects.create(modulename=instance.get_slug(), value=instance.get_val())
 
 
