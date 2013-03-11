@@ -60,8 +60,8 @@ def update_modules(logger=None):
 class BigBrotherModule():
     name = 'Unnamed Module'
     write_to_db = True
-    prepend_text = ''
-    add_text = ''
+    prefix_text = ''
+    suffix_text = ''
     warning_low = None
     warning_high = None
     link_url = None
@@ -71,6 +71,9 @@ class BigBrotherModule():
         return True
 
     def get_aggregate_function(self):
+        """
+        Return the Django aggregation function this module uses for the aggregated graph views.
+        """
         return self.aggregate_function
 
     def get_val(self):
@@ -78,12 +81,24 @@ class BigBrotherModule():
         Returns the current value
         """
         raise NotImplementedError('get_val not implemented.')
-        
+
+    def get_prefix_text(self):
+        """
+        Get the text to prefix the value with, for example $ for monetary values.
+        """
+        return self.prefix_text
+
+    def get_suffix_text(self):
+        """
+        Get the suffix for the value, for example "Users" for a user count.
+        """
+        return self.suffix_text
+
     def get_text(self):
         """
         Returns the current value as formatted text
         """
-        return '%s%g%s' % (self.prepend_text, self.get_val(), self.add_text)
+        return '%s%g%s' % (self.get_prefix_text(), self.get_val(), self.get_suffix_text())
         
     def get_slug(self):
         """
@@ -136,7 +151,7 @@ class NewUsersTodayCount(BigBrotherModule):
 
 class FreeRamCount(BigBrotherModule):
     name = 'Free RAM'
-    add_text = ' MB'
+    suffix_text = ' MB'
     warning_low = 16
 
     def check_compatible(self):
@@ -153,7 +168,7 @@ class FreeRamCount(BigBrotherModule):
 
 class SwapUsage(BigBrotherModule):
     name = 'Swap Usage'
-    add_text = ' MB'
+    suffix_text = ' MB'
     warning_high = 1
 
     def check_compatible(self):
@@ -170,7 +185,7 @@ class SwapUsage(BigBrotherModule):
 
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'
-    add_text = ' GB'
+    suffix_text = ' GB'
 
     def check_compatible(self):
         import platform
