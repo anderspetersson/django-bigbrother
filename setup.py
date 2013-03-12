@@ -26,8 +26,8 @@ METADATA = dict(
         'Framework :: Django',
     ],
     zip_safe = False,
-    packages=find_packages()
-    extra_requires = {
+    packages=find_packages(),
+    extra_requires={
         'system': ['psutil>=0.3']
     }
 )
