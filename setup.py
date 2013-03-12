@@ -27,6 +27,9 @@ METADATA = dict(
     ],
     zip_safe = False,
     packages=find_packages()
+    extra_requires = {
+        'system': ['psutil>=0.3']
+    }
 )
 
 if __name__ == '__main__':
