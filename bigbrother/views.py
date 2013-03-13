@@ -40,6 +40,18 @@ class BigBrotherGraphView(TemplateView):
     """
 
     template_name = 'bigbrother/graph.html'
+    week_interval = None
+    month_interval = None
+    year_interval = None
+
+    def get_week_interval(self):
+        return self.week_interval or 'days'
+
+    def get_month_interval(self):
+        return self.month_interval or 'days'
+
+    def get_year_interval(self):
+        return self.week_interval or 'weeks'
 
     def get_graph_data(self):
         slug = self.kwargs.get('slug')
@@ -47,9 +59,9 @@ class BigBrotherGraphView(TemplateView):
         q = ModuleStat.objects.filter(modulename=slug)
         qs = qsstats.QuerySetStats(q, 'added', module.get_aggregate_function() or Avg('value'))
 
-        week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow())
-        month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow())
-        year = qs.time_series(datetime.utcnow() - timedelta(weeks=52), datetime.utcnow(), interval='weeks')
+        week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow(), interval=self.get_week_interval())
+        month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow(), interval=self.get_week_interval())
+        year = qs.time_series(datetime.utcnow() - timedelta(weeks=52), datetime.utcnow(), interval=self.get_year_interval())
 
         return {
             'week': week, 'month': month, 'year': year,
