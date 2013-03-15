@@ -20,44 +20,38 @@
 	<script type="text/javascript">
 	$(function () {
         {% if week %}
-		var weekdata = [{% for dt, val in week %}[(new Date({{ dt|date:"Y" }},{{ dt|date:"n" }},{{ dt|date:"j" }})).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
+		var weekdata = [{% for dt, val in week %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
         $.plot($("#week"), [weekdata], {
             points: {show:true},
             lines: {show:true},
             yaxis: {min: 0},
             xaxis: {mode: "time",
-                minTickSize: [1, "day"],
-                timeformat: "%y/%m/%d",
-                min: (new Date({{ firstdow|date:"Y"}}, {{ firstdow|date:"n"}}, {{ firstdow|date:"j"}})).getTime(),
-                max: (new Date({{ lastdow|date:"Y" }}, {{ lastdow|date:"n" }}, {{ lastdow|date:"j" }})).getTime()
+                min: (new Date("{{ firstdow.isoformat }}")).getTime(),
+                max: (new Date("{{ lastdow.isoformat }}")).getTime()
             }
         });
         {% endif %}
         {% if month %}
-		var monthdata = [{% for dt, val in month %}[(new Date({{ dt|date:"Y" }},{{ dt|date:"n" }},{{ dt|date:"j" }})).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
+		var monthdata = [{% for dt, val in month %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
         $.plot($("#month"), [monthdata], {
             points: {show:true},
             lines: {show:true},
             yaxis: {min: 0},
             xaxis: {mode: "time",
-                minTickSize: [1, "day"],
-                timeformat: "%y/%m/%d",
-                min: (new Date({{ firstdom|date:"Y"}}, {{ firstdom|date:"n"}}, {{ firstdom|date:"j"}})).getTime(),
-                max: (new Date({{ lastdom|date:"Y" }}, {{ lastdom|date:"n" }}, {{ lastdom|date:"j" }})).getTime()
+                min: (new Date("{{ firstdom.isoformat }}")).getTime(),
+                max: (new Date("{{ lastdom.isoformat }}")).getTime()
             }
         });
         {% endif %}
         {% if year %}
-		var yeardata = [{% for dt, val in year %}[(new Date({{ dt|date:"Y" }},{{ dt|date:"n" }},{{ dt|date:"j" }})).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
+		var yeardata = [{% for dt, val in year %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
         $.plot($("#year"), [yeardata], {
             points: {show:true},
             lines: {show:true},
             yaxis: {min: 0},
             xaxis: {mode: "time",
-                minTickSize: [1, "day"],
-                timeformat: "%y/%m/%d",
-                min: (new Date({{ firstdoy|date:"Y"}}, {{ firstdoy|date:"n"}}, {{ firstdoy|date:"j"}})).getTime(),
-                max: (new Date({{ lastdoy|date:"Y" }}, {{ lastdoy|date:"n" }}, {{ lastdoy|date:"j" }})).getTime()
+                min: (new Date("{{ firstdoy.isoformat }}")).getTime(),
+                max: (new Date("{{ lastdoy.isoformat }}")).getTime()
             }
         });
         {% endif %}
