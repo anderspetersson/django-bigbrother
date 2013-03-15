@@ -46,7 +46,7 @@ class BigBrotherGraphView(TemplateView):
     year_interval = None
 
     def get_week_interval(self):
-        return self.week_interval or 'days'
+        return self.week_interval or 'hours'
 
     def get_month_interval(self):
         return self.month_interval or 'days'
@@ -61,7 +61,7 @@ class BigBrotherGraphView(TemplateView):
         qs = qsstats.QuerySetStats(q, 'added', module.get_aggregate_function() or Avg('value'))
 
         week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow(), interval=self.get_week_interval())
-        month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow(), interval=self.get_week_interval())
+        month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow(), interval=self.get_month_interval())
         year = qs.time_series(datetime.utcnow() - timedelta(weeks=52), datetime.utcnow(), interval=self.get_year_interval())
 
         return {
