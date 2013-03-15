@@ -19,11 +19,12 @@ class BigBrotherIndexView(TemplateView):
         data = []
         for cls in get_module_classes():
             instance = cls()
-            data.append({'name': instance.name,
-                         'value': instance.get_val(),
-                         'text': instance.get_text(),
-                         'warning': instance.check_warning(),
-                         'link': instance.link_url})
+            if instance.check_compatible():
+                data.append({'name': instance.name,
+                             'value': instance.get_val(),
+                             'text': instance.get_text(),
+                             'warning': instance.check_warning(),
+                             'link': instance.link_url})
         return data
 
     def get_context_data(self, **kwargs):
