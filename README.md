@@ -19,9 +19,9 @@ To note, Django 1.4/1.5 do not support timezone sensitive aggregations, so all g
 
 4. Include `bigbrother.urls` in your top level urls:
 
-		urlpatterns = patterns('', 
+		urlpatterns = patterns('',
 			# ...
-			url(r'^bigbrother/', include('bigbrother.urls')))
+			url(r'^bigbrother/', include('bigbrother.urls'))
 
 5. To update statistics you can either call `update_modules()` in `bigbrother.core` or using the `update_bigbrother` management command.
 
@@ -39,39 +39,44 @@ Bigbrother ships with a few modules. If you want to remove a or add a module, us
 	    	# Modules not enabled by default:
 	    	# 'bigbrother.core.SwapUsage',
 		)
-			
+
 ## Extending Bigbrother
 
-Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-module is subclass of bigbrother.core.BigBrotherModule, with a "get_val"-method returning the stat you are monitoring, and the value of it. Custom modules can live anywhere in your app, just put the full path to it in BIGBROTHER_MODULES. 
+Bigbrother is built to be easy to extend with your custom modules. A Bigbrother-module is subclass of bigbrother.core.BigBrotherModule, with a "get_val"-method returning the stat you are monitoring, and the value of it. Custom modules can live anywhere in your app, just put the full path to it in BIGBROTHER_MODULES.
 
 ### Example module returning number of total users for your site:
-		
+
 ```python
 from bigbrother.core import BigBrotherModule
 class UserCount(BigBrotherModule):
     name = 'Total Users'
-    
+
     def get_val(self):
         from django.contrib.auth.models import User
         users = User.objects.all()
         return users.count()
 ```
-		
+
 ### The BigBrotherModule Class have the following functions/attributes:
 
 `name`: A string representing the name of the module. Defaults to 'Unamed Module'
 
-`check_compatible`: A function returning a boolean indicating that the module's dependencies have been met can it can execute.
+`check_compatible`: A function returning a boolean indicating that the module's dependencies have been met can so can execute.
 
 `write_to_db`: Boolean, set to False if you don't want to save stats from this module to the database. Defaults to True
 
-`prepend_text`: String that's beeing added before the actual value on the Dashboard. Defaults to an empty string.
+`prefix_text`: Text to be prefixed onto the display version of the module's value
 
-`add_text`: String that's beeing added after the actual value on the Dashboard. Defaults to an empty string.
+`suffix_text`: Text to be suffixed onto the display version of the module's value
 
 `warning_low`: Integer or float. Warn bigbrother if the value is equal or less than this value. Set this to None (the default) to disable.
 
 `warning_high`: Integer or float. Warn bigbrother if the value is equal or higher than this value. Set to None (the default) to disable.
+
+`link_url`: Use this to link directly to an external URL from the dashboard.
+
+`aggregate_function`: The Django ORM aggregation object to be used for aggregating the data for graph data.
+
 
 ## Screenshot
 
