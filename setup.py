@@ -5,7 +5,7 @@ requirements = open('requirements.txt', 'r').readlines()
 
 METADATA = dict(
     name='django-bigbrother',
-    version='0.2.6',
+    version='0.3.0',
     author='Anders Petersson',
     author_email='me@anderspetersson.se',
     description='Modular Dashboard for Django Projects',

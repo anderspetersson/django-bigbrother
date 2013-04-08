@@ -1,3 +1,13 @@
+0.3.0
+- Added basic Sphinx documentation.
+- Made Views class-based.
+- Added option to change aggregate function for a module.
+- Renamed BigbrotherModule attributes add_text to suffix_text and prepend_text to prefix_text.
+- Added management command and celery task to update the stats.
+- Fixed incompability with django 1.5
+- Dropped support for django 1.3
+- Added an example project.
+
 0.2.5
 - Fixed graphs only showing the first x days instead of the last x days.
 - Bigbrother now uses a default set of modules if settings.BIGBROTHER_MODULES is not set.
