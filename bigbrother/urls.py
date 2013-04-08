@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
+import bigbrother.views
 
 urlpatterns = patterns('',
-    url('^$', 'bigbrother.views.index', name='bigbrother_index'),
-    url('^graph/(?P<slug>[^/]+)/$', 'bigbrother.views.graph', name='bigbrother_graph'),
-    url('^update/$', 'bigbrother.views.update', name='bigbrother_update'),
+    url('^$', bigbrother.views.BigBrotherIndexView.as_view(), name='bigbrother_index'),
+    url('^graph/(?P<slug>[^/]+)/$', bigbrother.views.BigBrotherGraphView.as_view(), name='bigbrother_graph'),
+    url('^update/$', bigbrother.views.BigBrotherUpdateView.as_view(), name='bigbrother_update'),
 )

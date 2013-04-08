@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 from setuptools import setup,find_packages
 
+requirements = open('requirements.txt', 'r').readlines()
+
 METADATA = dict(
     name='django-bigbrother',
     version='0.2.6',
@@ -10,9 +12,8 @@ METADATA = dict(
     long_description='Django-Bigbrother is a reusable, modular, dashboard for Django Projects. Designed to be easy to extend.',
     url='http://github.com/anderspetersson/django-bigbrother',
     keywords='django dashboard bigbrother monitoring',
-    install_requires=['psutil'],
+    install_requires=requirements,
     include_package_data=True,
-    scripts = ['bigbrother/bin/bigbrother_install.sh'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -25,7 +26,10 @@ METADATA = dict(
         'Framework :: Django',
     ],
     zip_safe = False,
-    packages=find_packages()
+    packages=find_packages(),
+    extra_requires={
+        'system': ['psutil>=0.3']
+    }
 )
 
 if __name__ == '__main__':

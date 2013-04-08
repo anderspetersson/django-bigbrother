@@ -10,23 +10,22 @@
 
 <body>
 	<div id="container">
-		
 		<div id="dashboard" class="clearfix">
 		{% block content %}
 			<ul>
-				{% for m in bb %}
+				{% for graph in bb %}
 				<li>
 					<div class="head">
-                                        {% if m.link_url %}
-						<h2><a target=_new href="{{m.link}}">{{ m.name }}</a></h2>
-                                        {% else %}
-						<h2>{{ m.name }}</h2>
-                                        {% endif %}
+                        {% if graph.link_url %}
+						<h2><a target=_new href="{{ graph.link }}">{{ graph.name }}</a></h2>
+                        {% else %}
+						<h2>{{ graph.name }}</h2>
+                        {% endif %}
 					</div>
 					<div class="num">
 						<h1>
-							<a href="{% url bigbrother.views.graph slug=m.name|slugify %}" 
-							{% if m.warning %}class="warning"{% endif %}>{{ m.text }}
+							<a href="{% url "bigbrother_graph" slug=graph.name|slugify %}"
+							{% if graph.warning %}class="warning"{% endif %}>{{ graph.text }}
 							</a>
 						</h1>
 					</div>

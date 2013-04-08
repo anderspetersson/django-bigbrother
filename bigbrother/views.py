@@ -1,63 +1,87 @@
-from django.conf import settings
-from django.utils.importlib import import_module
+from datetime import datetime, timedelta
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.views.generic import TemplateView, View
+from django.db.models import Avg
+import qsstats
 
 from bigbrother.models import ModuleStat
-from bigbrother.core import get_module_list
+from bigbrother.core import get_module_classes, get_module_by_slug
 
 
-def index(request):
-    
-    bb = []
+class BigBrotherIndexView(TemplateView):
+    """
+    Produces a overview of installed modules
+    """
 
-    for m in get_module_list():
-        modulename, attr = m.rsplit('.', 1)
-        module = import_module(modulename)
-        name = getattr(module,attr)().name
-        text = getattr(module,attr)().get_text()
-        value = getattr(module,attr)().get_val()
-        warning = getattr(module,attr)().check_warning()
-        link = getattr(module,attr)().link_url
-        bb.append({'name':name, 'value':value, 'text':text, 'warning':warning, 'link':link})
-    
-    return render_to_response('bigbrother/index.html', {'bb': bb}, context_instance=RequestContext(request)) 
+    template_name = 'bigbrother/index.html'
 
-def graph(request, slug):
-    q = ModuleStat.objects.filter(modulename=slug)
-    if q.count() >= 7: week = q[q.count()-7:]
-    else: week = q
-    if q.count() >= 31: month = q[q.count()-31:]
-    else: month = q
-    if q.count() >= 365: year = q[q.count()-365:]
-    else: year = q
-    
-    if q:
-        lastdow = week[week.count()-1].added
-        lastdom = month[month.count()-1].added
-        lastdoy = year[year.count()-1].added
-    return render_to_response('bigbrother/graph.html', locals(), context_instance=RequestContext(request))
+    def get_overview_data(self):
+        data = []
+        for cls in get_module_classes():
+            instance = cls()
+            if instance.check_compatible():
+                data.append({'name': instance.name,
+                             'value': instance.get_val(),
+                             'text': instance.get_text(),
+                             'warning': instance.check_warning(),
+                             'link': instance.link_url})
+        return data
 
-def update(request):
-    
-    bb = []
-    
-    for m in get_module_list():
-        modulename, attr = m.rsplit('.', 1)
-        module = import_module(modulename)
+    def get_context_data(self, **kwargs):
+        ctx = super(BigBrotherIndexView, self).get_context_data(**kwargs)
+        ctx.update({
+            'bb': self.get_overview_data,
+        })
+        return ctx
 
-        warning = getattr(module,attr)().check_warning()
-        
-        if getattr(module,attr)().write_to_db:
-            name = getattr(module,attr)().get_slug()
-            value = getattr(module,attr)().get_val()
-            bb.append({'name':name, 'value':value})
-            
-    for mo in bb:
-        ModuleStat(modulename=mo['name'], value=mo['value']).save()
-    
-    return HttpResponse(bb)
-            
 
-    
+class BigBrotherGraphView(TemplateView):
+    """
+    Shows a individual module and produces the related graph
+    """
+
+    template_name = 'bigbrother/graph.html'
+    week_interval = None
+    month_interval = None
+    year_interval = None
+
+    def get_week_interval(self):
+        return self.week_interval or 'hours'
+
+    def get_month_interval(self):
+        return self.month_interval or 'days'
+
+    def get_year_interval(self):
+        return self.week_interval or 'weeks'
+
+    def get_graph_data(self):
+        slug = self.kwargs.get('slug')
+        module = get_module_by_slug(slug)()
+        q = ModuleStat.objects.filter(modulename=slug)
+        qs = qsstats.QuerySetStats(q, 'added', module.get_aggregate_function() or Avg('value'))
+
+        week = qs.time_series(datetime.utcnow() - timedelta(weeks=1), datetime.utcnow(), interval=self.get_week_interval())
+        month = qs.time_series(datetime.utcnow() - timedelta(weeks=4), datetime.utcnow(), interval=self.get_month_interval())
+        year = qs.time_series(datetime.utcnow() - timedelta(weeks=52), datetime.utcnow(), interval=self.get_year_interval())
+
+        return {
+            'week': week, 'month': month, 'year': year,
+            'lastdow': week[-1][0], 'lastdom': month[-1][0], 'lastdoy': year[-1][0],
+            'firstdow': week[0][0], 'firstdom': month[0][0], 'firstdoy': year[0][0],
+            'modulename': module.name,
+        }
+
+    def get_context_data(self, **kwargs):
+        ctx = super(BigBrotherGraphView, self).get_context_data(**kwargs)
+        ctx.update(self.get_graph_data())
+        return ctx
+
+
+class BigBrotherUpdateView(View):
+    """
+    Compatibility view for updating modules
+    """
+    def get(self, request, *args, **kwargs):
+        from .core import update_modules
+        update_modules()
+        return HttpResponse('ok')

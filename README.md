@@ -7,6 +7,8 @@ Django Bigbrother is a modular dashboard app for Django projects.
 * django >= 1.3 (http://pypi.python.org/pypi/django/)
 * psutil >= 0.3 (http://code.google.com/p/psutil/)
 
+To note, Django 1.4/1.5 do not support timezone sensitive aggregations, so all graphs will return zero values with `USE_TZ` set to `True`.  This has been [resolved](https://github.com/django/django/pull/715) in Django trunk, which should be in for the next release.
+
 ## Installation
 
 1. pip install django-bigbrother
@@ -21,14 +23,8 @@ Django Bigbrother is a modular dashboard app for Django projects.
 			# ...
 			url(r'^bigbrother/', include('bigbrother.urls')))
 
-5. Recommended, but not needed, is to add a cronjob to poll the update view. django-bigbrother ships with a shellscript to make this easy:
+5. To update statistics you can either call `update_modules()` in `bigbrother.core` or using the `update_bigbrother` management command.
 
-		$ bigbrother_install.sh
-		Please enter URL to your project. For example: http://www.yoururl.com
-		http://www.mywebsite.com
-		Installed cronjob: 59   23  *    *   * wget http://www.mywebsite.com/bigbrother/update/
-		
-	
 ## Configuration
 
 Bigbrother ships with a few modules. If you want to remove a or add a module, use the  `BIGBROTHER_MODULES` setting:
@@ -61,9 +57,11 @@ class UserCount(BigBrotherModule):
         return users.count()
 ```
 		
-### The BigBrotherModule Class have the following attributes:
+### The BigBrotherModule Class have the following functions/attributes:
 
 `name`: A string representing the name of the module. Defaults to 'Unamed Module'
+
+`check_compatible`: A function returning a boolean indicating that the module's dependencies have been met can it can execute.
 
 `write_to_db`: Boolean, set to False if you don't want to save stats from this module to the database. Defaults to True
 
@@ -74,12 +72,6 @@ class UserCount(BigBrotherModule):
 `warning_low`: Integer or float. Warn bigbrother if the value is equal or less than this value. Set this to None (the default) to disable.
 
 `warning_high`: Integer or float. Warn bigbrother if the value is equal or higher than this value. Set to None (the default) to disable.
-
-## Tracking data for graphs
-
-New in Bigbrother 0.2.0 is the ability to save data and show graphs. This is still in a very early stage. To save data to the database, goto yoururl.com/bigbrother/update/. Setting up a cronjob to do this at midnight every day is recommended. The graphs does currently only support one data entry per day.
-
-The goal is to add functionality to do this via Selery's perodic tasks, or simular in the future.
 
 ## Screenshot
 
