@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 
 METADATA = dict(
     name='django-bigbrother',
-    version='0.3.0',
+    version='0.3.1',
     author='Anders Petersson',
     author_email='me@anderspetersson.se',
     description='Modular Dashboard for Django Projects',

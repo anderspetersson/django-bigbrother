@@ -1,14 +1,26 @@
 from datetime import datetime, timedelta
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.views.generic import TemplateView, View
 from django.db.models import Avg
+from django.conf import settings
 import qsstats
 
 from bigbrother.models import ModuleStat
 from bigbrother.core import get_module_classes, get_module_by_slug
 
 
-class BigBrotherIndexView(TemplateView):
+class BigBrotherView(TemplateView):
+    """
+    If the setting BIGBROTHER_REQUIRE_ADMIN is set to True, checks if the user is staff member.
+    """
+
+    def get(self, request, *args, **kwargs):
+        if settings.BIGBROTHER_REQUIRE_ADMIN and not request.user.is_staff:
+            return HttpResponseForbidden()
+        else:
+            return super(BigBrotherView, self).get(request, *args, **kwargs)
+
+class BigBrotherIndexView(BigBrotherView):
     """
     Produces a overview of installed modules
     """
@@ -35,7 +47,7 @@ class BigBrotherIndexView(TemplateView):
         return ctx
 
 
-class BigBrotherGraphView(TemplateView):
+class BigBrotherGraphView(BigBrotherView):
     """
     Shows a individual module and produces the related graph
     """
