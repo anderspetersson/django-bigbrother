@@ -2,26 +2,32 @@
 
 {% block content %}
 <div id="graphcontainer">
-	<h1>{{ modulename }}</h1>
+    <h1>{{ modulename }}</h1>
     {% for graph in bb %}
-	<h2>{{ graph.name }}</h2>
-	<div id="{{ graph.name|slugify }}" class="graph">No Data</div>
+    <h2>{{ graph.name }}</h2>
+    <div id="{{ graph.name|slugify }}" class="graph"></div>
     {% endfor %}
 </div>
 {% endblock %}
 
 
 {% block extrajs %}
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  	<script src="{{ STATIC_URL }}js/jquery.flot.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.flot.time.js"></script>
-	<script type="text/javascript">
-	$(function () {
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.flot.time.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
         {% for graph in bb %}
-		var data = [{% for dt, val in graph.data %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
+        var data = [{% for dt, val in graph.data %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
         $.plot($("#{{ graph.name|slugify }}"), [data], {
+            {% if graph.showpoints %}
             points: {show:true},
+            {% endif %}
+            {% if graph.type == 'bar' %}
+            bars: {show:true, barWidth: 60*60*10000, align: "center"},
+            {% elif graph.type == 'line' %}
             lines: {show:true},
+            {% endif %}
             yaxis: {min: 0},
             xaxis: {mode: "time",
                 min: (new Date("{{ graph.startdate.isoformat }}")).getTime(),
@@ -29,6 +35,6 @@
             }
         });
         {% endfor %}
-	});
-	</script>
+    });
+    </script>
 {% endblock %}

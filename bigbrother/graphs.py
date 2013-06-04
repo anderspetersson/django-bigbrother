@@ -7,6 +7,7 @@ import qsstats
 
 class Graph():
     stopdate = datetime.utcnow()
+    showpoints = False
 
     def get_graph_data(self, slug, *args, **kwargs):
         module = get_module_by_slug(slug)()
@@ -18,6 +19,11 @@ class Graph():
 
 class LineGraph(Graph):
     type = 'line'
+    showpoints = True
+
+
+class BarGraph(Graph):
+    type = 'bar'
 
 
 class LastWeekGraph(LineGraph):

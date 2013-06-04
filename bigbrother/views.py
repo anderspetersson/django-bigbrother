@@ -61,7 +61,9 @@ class BigBrotherGraphView(BigBrotherView):
             data.append({'name': instance.name,
                          'data': dataset,
                          'startdate': dataset[0][0],
-                         'stopdate': dataset[-1][0]})
+                         'stopdate': dataset[-1][0],
+                         'type': instance.type,
+                         'showpoints': instance.showpoints})
         return data
 
     def get_context_data(self, **kwargs):
