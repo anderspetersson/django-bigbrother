@@ -12,7 +12,7 @@ To note, Django 1.4/1.5 do not support timezone sensitive aggregations, so all g
 
 ## Installation
 
-1. pip install django-bigbrother
+1. pip install `django-bigbrother`
 
 2. Add `bigbrother` to your `INSTALLED_APPS`
 
@@ -40,6 +40,20 @@ Bigbrother ships with a few modules. If you want to remove a or add a module, us
 	    	# Modules not enabled by default:
 	    	# 'bigbrother.core.SwapUsage',
 		)
+		
+You can also choose what graphs are shown in bigbrother. This is configurable at project-level and module level. To add or remove a graph at project-level, use the `BIGBROTHER_GRAPHS`settings:
+
+		BIGBROTHER_GRAPHS = (
+			# Default Graphs
+			'bigbrother.graphs.LastWeekGraph',
+        	'bigbrother.graphs.LastMonthGraph',
+        	'bigbrother.graphs.LastYearGraph',
+        )
+        
+If you would like to restrict access to admins only, use the BIGBROTHER_REQUIRE_ADMIN settings.
+		
+		# Restrict access to admins only.
+		BIGBROTHER_REQUIRE_ADMIN = True
 
 ## Extending Bigbrother
 
@@ -77,6 +91,8 @@ class UserCount(BigBrotherModule):
 `link_url`: Use this to link directly to an external URL from the dashboard.
 
 `aggregate_function`: The Django ORM aggregation object to be used for aggregating the data for graph data.
+
+`graphs`: A tuple of bigbrother.graphs.Graph subclasses that bigbrother will use to draw graphs. Defaults to the value of the BIGBROTHER_GRAPHS setting.
 
 
 ## Screenshot
