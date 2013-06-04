@@ -6,3 +6,4 @@ django-bigrother.egg-info/*
 .idea
 *.sqlite3
 docs/_*
+*.DS_Store

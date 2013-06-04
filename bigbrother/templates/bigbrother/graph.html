@@ -3,12 +3,10 @@
 {% block content %}
 <div id="graphcontainer">
 	<h1>{{ modulename }}</h1>
-	<h2>Last Week</h2>
-	<div id="week" class="graph">No Data</div>
-	<h2>Last Month</h2>
-	<div id="month" class="graph">No Data</div>
-	<h2>Last Year</h2>
-	<div id="year" class="graph">No Data</div>
+    {% for graph in bb %}
+	<h2>{{ graph.name }}</h2>
+	<div id="{{ graph.name|slugify }}" class="graph">No Data</div>
+    {% endfor %}
 </div>
 {% endblock %}
 
@@ -19,43 +17,18 @@
     <script src="{{ STATIC_URL }}js/jquery.flot.time.js"></script>
 	<script type="text/javascript">
 	$(function () {
-        {% if week %}
-		var weekdata = [{% for dt, val in week %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
-        $.plot($("#week"), [weekdata], {
+        {% for graph in bb %}
+		var data = [{% for dt, val in graph.data %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
+        $.plot($("#{{ graph.name|slugify }}"), [data], {
             points: {show:true},
             lines: {show:true},
             yaxis: {min: 0},
             xaxis: {mode: "time",
-                min: (new Date("{{ firstdow.isoformat }}")).getTime(),
-                max: (new Date("{{ lastdow.isoformat }}")).getTime()
+                min: (new Date("{{ graph.startdate.isoformat }}")).getTime(),
+                max: (new Date("{{ graph.stopdate.isoformat }}")).getTime()
             }
         });
-        {% endif %}
-        {% if month %}
-		var monthdata = [{% for dt, val in month %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
-        $.plot($("#month"), [monthdata], {
-            points: {show:true},
-            lines: {show:true},
-            yaxis: {min: 0},
-            xaxis: {mode: "time",
-                min: (new Date("{{ firstdom.isoformat }}")).getTime(),
-                max: (new Date("{{ lastdom.isoformat }}")).getTime()
-            }
-        });
-        {% endif %}
-        {% if year %}
-		var yeardata = [{% for dt, val in year %}[(new Date("{{ dt.isoformat }}")).getTime(), {{ val|stringformat:"f" }}],{% endfor %}]
-        $.plot($("#year"), [yeardata], {
-            points: {show:true},
-            lines: {show:true},
-            yaxis: {min: 0},
-            xaxis: {mode: "time",
-                min: (new Date("{{ firstdoy.isoformat }}")).getTime(),
-                max: (new Date("{{ lastdoy.isoformat }}")).getTime()
-            }
-        });
-        {% endif %}
-
+        {% endfor %}
 	});
 	</script>
 {% endblock %}

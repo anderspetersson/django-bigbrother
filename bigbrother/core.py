@@ -18,6 +18,16 @@ def get_module_list():
     )
     return getattr(settings, 'BIGBROTHER_MODULES', default_modules)
 
+def get_graph_list():
+    """
+    Returns a list of the default graphs.
+    """
+    default_graphs = (
+        'bigbrother.graphs.LastWeekGraph',
+        'bigbrother.graphs.LastMonthGraph',
+        'bigbrother.graphs.LastYearGraph',
+    )
+    return getattr(settings, 'BIGBROTHER_GRAPHS', default_graphs)
 
 def get_module_classes():
     """
@@ -36,6 +46,22 @@ def get_module_classes():
         clslist.append(cls)
     return clslist
 
+def get_graph_classes():
+    """
+    Returns all the graph classes defined in settings.
+    """
+    clslist = []
+    for m in get_graph_list():
+        modulename, attr = m.rsplit('.', 1)
+        try:
+            module = import_module(modulename)
+        except ImportError:
+            continue
+        cls = getattr(module, attr, None)
+        if not cls:
+            continue
+        clslist.append(cls)
+    return clslist
 
 def get_module_by_slug(slug):
     """
@@ -65,19 +91,15 @@ class BigBrotherModule():
     Base class for all BigBrother modules that implements the basic skeleton required for a module.
     """
 
-    #: The human readable display name for the module
     name = 'Unnamed Module'
-    #: Flag to indicate it should be processed by the update function and store the results in the DB.
     write_to_db = True
-    #: Text to be prefixed onto the display version of the module's value
     prefix_text = None
-    #: Text to be suffixed onto the display version of the module's value
     suffix_text = None
     warning_low = None
     warning_high = None
     link_url = None
-    #: The Django ORM aggregation object to be used for aggregating the data for graph data.
     aggregate_function = None
+    graphs = get_graph_list()
 
     def check_compatible(self):
         """
@@ -115,7 +137,7 @@ class BigBrotherModule():
         Returns the current value as formatted text
         """
         return '%s%g%s' % (self.get_prefix_text(), self.get_val(), self.get_suffix_text())
-        
+
     def get_slug(self):
         """
         Returns the URL friendly slug for the module
@@ -133,7 +155,7 @@ class BigBrotherModule():
             self.warn(warningtype='low')
             return True
         return False
-    
+
     def warn(self, warningtype):
         send_warning(module=self.__class__, warningtype=warningtype)
 
@@ -159,7 +181,7 @@ class UserCount(BigBrotherModule):
         users = USER_MODEL.objects.all()
         return users.count()
 
-        
+
 class NewUsersTodayCount(BigBrotherModule):
     """
     Module providing a count of new users from django.contrib.auth
