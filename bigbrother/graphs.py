@@ -12,7 +12,6 @@ class Graph():
         module = get_module_by_slug(slug)()
         q = ModuleStat.objects.filter(modulename=slug)
         qs = qsstats.QuerySetStats(q, 'added', module.get_aggregate_function() or Avg('value'))
-        qss = qsstats.QuerySetStats(q, 'value')
         data = qs.time_series(self.startdate, self.stopdate, interval=self.interval)
         return data
 
@@ -24,16 +23,16 @@ class LineGraph(Graph):
 class LastWeekGraph(LineGraph):
     name = 'Last Week'
     interval = 'days'
-    startdate = datetime.utcnow() - timedelta(weeks=1)
+    startdate = datetime.utcnow() - timedelta(days=7)
 
 
 class LastMonthGraph(LineGraph):
     name = 'Last Month'
     interval = 'days'
-    startdate = datetime.utcnow() - timedelta(weeks=4)
+    startdate = datetime.utcnow() - timedelta(days=30)
 
 
 class LastYearGraph(LineGraph):
     name = 'Last Year'
     interval = 'weeks'
-    startdate = datetime.utcnow() - timedelta(weeks=52)
+    startdate = datetime.utcnow() - timedelta(days=365)

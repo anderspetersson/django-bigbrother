@@ -76,6 +76,7 @@ def update_modules(logger=None):
     """
     Process all module updates
     """
+    now = datetime.datetime.utcnow()
     for cls in get_module_classes():
         instance = cls()
         if not instance.check_compatible():
@@ -83,7 +84,16 @@ def update_modules(logger=None):
         if instance.write_to_db:
             if logger:
                 logger.debug('Saving %s - Value: %.2f' % (instance.name, instance.get_val()))
-            ModuleStat.objects.create(modulename=instance.get_slug(), value=instance.get_val())
+            try:
+                module = ModuleStat.objects.get(
+                modulename=instance.get_slug(),
+                added__year=now.year,
+                added__month=now.month,
+                added__day=now.day)
+                module.value=instance.get_val()
+                module.save()
+            except ModuleStat.DoesNotExist:
+                ModuleStat.objects.create(modulename=instance.get_slug(), value=instance.get_val())
 
 
 class BigBrotherModule():
