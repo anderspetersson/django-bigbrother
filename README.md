@@ -40,7 +40,7 @@ Bigbrother ships with a few modules. If you want to remove a or add a module, us
 	    	# Modules not enabled by default:
 	    	# 'bigbrother.core.SwapUsage',
 		)
-		
+
 You can also choose what graphs are shown in bigbrother. This is configurable at project-level and module level. To add or remove a graph at project-level, use the `BIGBROTHER_GRAPHS`settings:
 
 		BIGBROTHER_GRAPHS = (
@@ -49,9 +49,9 @@ You can also choose what graphs are shown in bigbrother. This is configurable at
         	'bigbrother.graphs.LastMonthGraph',
         	'bigbrother.graphs.LastYearGraph',
         )
-        
+
 If you would like to restrict access to admins only, use the BIGBROTHER_REQUIRE_ADMIN settings.
-		
+
 		# Restrict access to admins only.
 		BIGBROTHER_REQUIRE_ADMIN = True
 
@@ -93,6 +93,8 @@ class UserCount(BigBrotherModule):
 `aggregate_function`: The Django ORM aggregation object to be used for aggregating the data for graph data.
 
 `graphs`: A tuple of bigbrother.graphs.Graph subclasses that bigbrother will use to draw graphs. Defaults to the value of the BIGBROTHER_GRAPHS setting.
+
+`group` String that lets you specify a group to group modules by.
 
 
 ## Screenshot

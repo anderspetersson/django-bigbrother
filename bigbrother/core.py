@@ -29,7 +29,7 @@ def get_graph_list():
     )
     return getattr(settings, 'BIGBROTHER_GRAPHS', default_graphs)
 
-def get_module_classes():
+def get_module_classes(group=None):
     """
     Returns all the module classes defined in the settings
     """
@@ -43,6 +43,9 @@ def get_module_classes():
         cls = getattr(module, attr, None)
         if not cls:
             continue
+        if group:
+            if slugify(cls.group) != group:
+                continue
         clslist.append(cls)
     return clslist
 
@@ -110,6 +113,7 @@ class BigBrotherModule():
     link_url = None
     aggregate_function = None
     graphs = get_graph_list()
+    group = None
 
     def check_compatible(self):
         """
@@ -175,6 +179,7 @@ class UserCount(BigBrotherModule):
     Module providing a count of users from django.contrib.auth
     """
     name = 'Total Users'
+    group = 'User'
 
     def check_compatible(self):
         from django.conf import settings
@@ -197,6 +202,7 @@ class NewUsersTodayCount(BigBrotherModule):
     Module providing a count of new users from django.contrib.auth
     """
     name = 'New Users Today'
+    group = 'User'
 
     def check_compatible(self):
         from django.conf import settings
@@ -218,6 +224,7 @@ class FreeRamCount(BigBrotherModule):
     name = 'Free RAM'
     suffix_text = ' MB'
     warning_low = 16
+    group = 'Server'
 
     def check_compatible(self):
         try:
@@ -235,6 +242,7 @@ class SwapUsage(BigBrotherModule):
     name = 'Swap Usage'
     suffix_text = ' MB'
     warning_high = 1
+    group = 'Server'
 
     def check_compatible(self):
         try:
@@ -251,6 +259,7 @@ class SwapUsage(BigBrotherModule):
 class FreeDiskCount(BigBrotherModule):
     name = 'Free Disk Space'
     suffix_text = ' GB'
+    group = 'Server'
 
     def check_compatible(self):
         import platform

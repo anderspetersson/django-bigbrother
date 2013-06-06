@@ -25,17 +25,26 @@ class BigBrotherIndexView(BigBrotherView):
     """
 
     template_name = 'bigbrother/index.html'
+    group = None
+
+    def get_group(self):
+        """
+        Makes it possible to override group for a view.
+        """
+
+        return self.group
 
     def get_overview_data(self):
         data = []
-        for cls in get_module_classes():
+        for cls in get_module_classes(self.get_group()):
             instance = cls()
             if instance.check_compatible():
                 data.append({'name': instance.name,
                              'value': instance.get_val(),
                              'text': instance.get_text(),
                              'warning': instance.check_warning(),
-                             'link': instance.link_url})
+                             'link': instance.link_url,
+                             'group': self.get_group})
         return data
 
     def get_context_data(self, **kwargs):
@@ -73,6 +82,16 @@ class BigBrotherGraphView(BigBrotherView):
             'modulename': self.kwargs.get('slug')
         })
         return ctx
+
+class BigBrotherGroupView(BigBrotherIndexView):
+    """
+    Display overview data for a group.
+    """
+
+    template_name = 'bigbrother/group.html'
+
+    def get_group(self):
+        return self.kwargs.get('slug')
 
 
 class BigBrotherUpdateView(View):

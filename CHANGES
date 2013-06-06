@@ -1,3 +1,6 @@
+0.4.1 (In developement)
+- Modules can now be grouped.
+
 0.4.0
 - Added ability to specify what graphs to show on project-level and module-level.
 - Added support for bar graphs.
