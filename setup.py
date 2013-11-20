@@ -10,7 +10,7 @@ METADATA = dict(
     long_description='Django-Bigbrother is a reusable, modular, dashboard for Django Projects. Designed to be easy to extend.',
     url='http://github.com/anderspetersson/django-bigbrother',
     keywords='django dashboard bigbrother monitoring',
-    install_requires=['django>=1.4', 'python-dateutil>=1.4,<2.0', 'django-qsstats-magic'],
+    install_requires=['django>=1.6', 'python-dateutil>=1.4,<2.0', 'django-qsstats-magic'],
     include_package_data=True,
     classifiers=[
         'Development Status :: 4 - Beta',
