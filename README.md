@@ -20,7 +20,7 @@ Django Bigbrother is a modular dashboard app for Django projects.
 
 		urlpatterns = patterns('',
 			# ...
-			url(r'^bigbrother/', include('bigbrother.urls'))
+			path('bigbrother/', include('bigbrother.urls'))
 
 5. To update statistics you can either call `update_modules()` in `bigbrother.core` or using the `update_bigbrother` management command.
 
